@@ -9,7 +9,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(third_party)
 
-add_subdirectory(src)
+add_subdirectory(renderer)
+
+add_subdirectory(app)
 
 include(CTest)
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING)

@@ -1,7 +1,7 @@
 macro(AddTest target_name)
     add_executable(${target_name} ${target_name}.cpp)
     target_compile_features(${target_name} PUBLIC cxx_std_17)
-    target_link_libraries(${target_name} PRIVATE Catch2::Catch2WithMain renderer_core)
+    target_link_libraries(${target_name} PRIVATE Catch2::Catch2WithMain renderer)
     add_test(NAME ${target_name} COMMAND $<TARGET_FILE:${target_name}>)
 endmacro(AddTest target_name)
 
