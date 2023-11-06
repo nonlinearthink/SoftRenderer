@@ -3,7 +3,9 @@ project(SoftEngine VERSION 0.1.0 LANGUAGES CXX)
 
 # Generate compile_commands.json for clangd LSP
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_VERBOSE_MAKEFILEON ON)
+
+# CMake Debug
+# set(CMAKE_VERBOSE_MAKEFILEON ON)
 
 add_subdirectory(third_party)
 

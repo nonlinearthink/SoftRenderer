@@ -6,3 +6,4 @@ macro(AddTest target_name)
 endmacro(AddTest target_name)
 
 AddTest(utils_tests)
+AddTest(vec_tests)

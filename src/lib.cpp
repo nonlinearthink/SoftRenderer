@@ -1,3 +1,4 @@
+#include "core/vec.h"
 #include "utils.h"
 
 double utils::degree_to_radian(double degree) {
