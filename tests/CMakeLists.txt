@@ -7,3 +7,4 @@ endmacro(AddTest target_name)
 
 AddTest(utils_tests)
 AddTest(vec_tests)
+AddTest(matrix_tests)
