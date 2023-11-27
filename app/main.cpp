@@ -1,10 +1,11 @@
 #include <iostream>
 
-#include "core/vec.h"
+// template <typename T>
+// class Vector2<T> {
+//    public:
+//     Vector2(T x, T y) : m_x{x}, m_y{y} {}
+//     ~Vector2() {}
+//     T m_x, m_y;
+// };
 
-void say_hello() { std::cout << "Hello, from SoftEngine!" << std::endl; }
-
-int main() {
-    say_hello();
-    return 0;
-}
+int main() { return 0; }

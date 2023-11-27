@@ -1,11 +1,31 @@
 #include "catch2/catch_test_macros.hpp"
 #include "core/vec.h"
 
-TEST_CASE("vector2i") {
-    // Vector2i* v2i = new Vector2i(1, 2);
+class Vector2TestFixture {
+   protected:
+    Vector2<int> v1;
+    Vector2<int> v2;
 
-    // REQUIRE(v2i->x() == 1);
-    // REQUIRE(v2i->y() == 2);
+   public:
+    Vector2TestFixture() : v1(1, 2), v2(3, 4) {}
+};
 
-    // delete v2i;
+TEST_CASE_METHOD(Vector2TestFixture, "Vector2 addition", "[Vector2]") {
+    Vector2<int> result = v1 + v2;
+    REQUIRE(result.x == 4);
+    REQUIRE(result.y == 6);
+}
+
+TEST_CASE_METHOD(Vector2TestFixture, "Vector2 subtraction", "[Vector2]") {
+    SECTION("Subtracting v2 from v1") {
+        Vector2<int> result = v1 - v2;
+        REQUIRE(result.x == -2);
+        REQUIRE(result.y == -2);
+    }
+
+    SECTION("Subtracting v1 from v2") {
+        Vector2<int> result = v2 - v1;
+        REQUIRE(result.x == 2);
+        REQUIRE(result.y == 2);
+    }
 }
