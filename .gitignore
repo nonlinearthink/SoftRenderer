@@ -1,6 +1,11 @@
 build
-.vscode
 .cache
+
+.vscode
+
 .vs
+
 .idea
 cmake-build-debug
+
+.DS_Store

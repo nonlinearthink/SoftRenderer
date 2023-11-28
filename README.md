@@ -1,10 +1,13 @@
 # SoftRenderer
 
+A CPU-based Rasterized Renderer from Scratch.
+
 ## Install
 
+Download third_party:
+
 ```bash
-# Download third_party
 git submodule update --recursive --init
 ```
 
-Then build cmake.
+Build cmake.

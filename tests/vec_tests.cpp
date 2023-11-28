@@ -1,5 +1,5 @@
 #include "catch2/catch_test_macros.hpp"
-#include "core/vec.h"
+#include "renderer/core/vec.hpp"
 
 class Vector2TestFixture {
    protected:

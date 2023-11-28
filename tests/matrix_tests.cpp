@@ -1,5 +1,5 @@
 #include "catch2/catch_test_macros.hpp"
-#include "core/matrix.h"
+#include "renderer/core/matrix.hpp"
 
 TEST_CASE("Matrix operations are computed", "[matrix]") {
     Matrix4 m1{}, m2{};
