@@ -1,7 +1,7 @@
 #include "catch2/catch_test_macros.hpp"
-#include "renderer/utils.h"
+#include "renderlib/utils.h"
 
-using namespace renderer;
+using namespace Renderlib;
 
 TEST_CASE("degree_to_radian") {
     REQUIRE(std::abs(degree_to_radian(0) - 0) < 1e-6);

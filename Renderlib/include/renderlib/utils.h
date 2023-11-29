@@ -2,15 +2,14 @@
 
 #include <cmath>
 
-namespace renderer {
+namespace Renderlib {
 const double M_PI = std::acos(-1);
 
 inline double degree_to_radian(double degree) {
-    return degree * (renderer::M_PI / 180);
+    return degree * (Renderlib::M_PI / 180);
 }
 
 inline double radian_to_degree(double radian) {
-    return radian * (180 / renderer::M_PI);
+    return radian * (180 / Renderlib::M_PI);
 }
-
-}  // namespace renderer
+}  // namespace Renderlib

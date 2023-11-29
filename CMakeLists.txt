@@ -9,15 +9,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(third_party)
 
-add_subdirectory(renderer)
-
-add_subdirectory(app)
-
 include(CTest)
-if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
+add_subdirectory(Renderlib)
+
+add_subdirectory(SoftRenderer)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

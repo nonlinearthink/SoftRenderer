@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <cstddef>
-#include <stdexcept>
 
 template <typename T>
 class Vector2 {
@@ -21,12 +20,10 @@ class Vector2 {
 
 template <typename T>
 T Vector2<T>::operator[](size_t n) const {
-    if (n == 0) {
-        return x;
-    } else if (n == 1) {
+    if (n == 1) {
         return y;
     } else {
-        throw std::runtime_error("Invalid Index Out of Range.");
+        return x;
     }
 }
 
@@ -58,7 +55,7 @@ class Vector3 {
     Vector3<T>() : x(), y(), z() {}
     Vector3<T>(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
 
-    Vector3<T> operator[](size_t n) const;
+    T operator[](size_t n) const;
     inline Vector3<T> operator+(const Vector3<T>& rhs) const;
     inline Vector3<T> operator-(const Vector3<T>& rhs) const;
     inline Vector3<T> operator*(const Vector3<T>& rhs) const;
@@ -72,15 +69,13 @@ class Vector3 {
 };
 
 template <typename T>
-Vector3<T> Vector3<T>::operator[](size_t n) const {
-    if (n == 0) {
-        return x;
-    } else if (n == 1) {
+T Vector3<T>::operator[](size_t n) const {
+    if (n == 1) {
         return y;
     } else if (n == 2) {
         return z;
     } else {
-        throw std::runtime_error("Invalid Index Out of Range.");
+        return x;
     }
 }
 
