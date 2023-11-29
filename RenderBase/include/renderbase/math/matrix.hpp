@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstddef>
 
+namespace RenderBase {
+
 template <size_t N>
 class Matrix {
    public:
@@ -11,6 +13,7 @@ class Matrix {
 
     static Matrix<N> Identity();
 
+    float operator[](size_t n) const;
     Matrix<N> operator+(const Matrix<N>& rhs) const;
     Matrix<N> operator-(const Matrix<N>& rhs) const;
     Matrix<N> operator*(const Matrix<N>& rhs) const;
@@ -41,6 +44,15 @@ Matrix<N> Matrix<N>::Identity() {
         result._m[i][i] = 1.0f;
     }
     return result;
+}
+
+template <size_t N>
+float Matrix<N>::operator[](size_t n) const {
+    if (n < 16) {
+        return _m[n / N][n % N];
+    } else {
+        return _m[0][0];
+    }
 }
 
 template <size_t N>
@@ -125,3 +137,5 @@ Matrix<N> Matrix<N>::transpose() const {
 }
 
 using Matrix4 = Matrix<4>;
+
+}  // namespace RenderBase

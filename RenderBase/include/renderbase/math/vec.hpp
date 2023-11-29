@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstddef>
 
+namespace RenderBase {
+
 template <typename T>
 class Vector2 {
    public:
@@ -135,3 +137,5 @@ using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
 using Vector3f = Vector3<float>;
 using Vector3i = Vector3<int>;
+
+}  // namespace RenderBase

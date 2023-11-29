@@ -1,16 +1,26 @@
-cmake_minimum_required(VERSION 3.21)
-project(SoftEngine VERSION 0.1.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.20)
 
-# Generate compile_commands.json for clangd LSP
+# option(SOFT_RENDERER_DEV, "Enable the develop mode: build tests, cmake verbose log etc." ON)
+
+project(SoftRenderer VERSION 0.1.0 LANGUAGES CXX)
+
+# if(SOFT_RENDERER_DEV)
+include(CTest)
+
+#     # build tests
+set(BUILD_TESTING ON)
+#     # cmake verbose log
+#     set(CMAKE_VERBOSE_MAKEFILEON ON)    
+# else()
+#     set(BUILD_TESTING OFF)
+# endif()
+
+# generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# CMake Debug
-# set(CMAKE_VERBOSE_MAKEFILEON ON)
 
 add_subdirectory(third_party)
 
-include(CTest)
-add_subdirectory(Renderlib)
+add_subdirectory(RenderBase)
 
 add_subdirectory(SoftRenderer)
 
