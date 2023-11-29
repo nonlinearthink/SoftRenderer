@@ -3,7 +3,7 @@
 
 using namespace RenderBase;
 
-TEST_CASE("Matrix operations are computed", "[matrix]") {
+TEST_CASE("Matrix base case", "[Matrix]") {
     Matrix4 m1{}, m2{};
 
     SECTION("Matrix addition") {

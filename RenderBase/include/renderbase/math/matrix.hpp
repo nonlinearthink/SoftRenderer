@@ -4,7 +4,6 @@
 #include <cstddef>
 
 namespace RenderBase {
-
 template <size_t N>
 class Matrix {
    public:
@@ -137,5 +136,4 @@ Matrix<N> Matrix<N>::transpose() const {
 }
 
 using Matrix4 = Matrix<4>;
-
 }  // namespace RenderBase
