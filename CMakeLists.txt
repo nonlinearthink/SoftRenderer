@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # cmake verbose log
 set(CMAKE_VERBOSE_MAKEFILEON OFF)    
 
-add_subdirectory(third_party)
+add_subdirectory(ThirdParty)
 
 add_subdirectory(RenderBase)
 
