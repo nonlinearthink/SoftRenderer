@@ -6,7 +6,7 @@
 namespace RenderBase {
 template <typename T>
 class Vector2 {
-   public:
+public:
     T x, y;
 
     Vector2<T>() : x(), y() {}
@@ -50,7 +50,7 @@ inline Vector2<T> Vector2<T>::operator*(const T k) const {
 
 template <typename T>
 class Vector3 {
-   public:
+public:
     T x, y, z;
 
     Vector3<T>() : x(), y(), z() {}

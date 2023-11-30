@@ -2,7 +2,7 @@
 
 #include "Windows.h"
 
-#include <iostream>
+#include "renderer.h"
 
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam,
                                  LPARAM lparam) {
@@ -17,7 +17,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam,
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                    LPSTR lpCmdLine, int nCmdShow) {
-    const char CLASS_NAME[] = "Sample Window Class";
+    const char CLASS_NAME[] = "SoftRenderer Window Class";
 
     WNDCLASS wc = {};
 
@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return 0;
     }
 
-    HWND hwnd = CreateWindowEx(0,                    // Optional window styles.
+    HWND hWnd = CreateWindowEx(0,                    // Optional window styles.
                                CLASS_NAME,           // Window class
                                "SoftRenderer",       // Window text
                                WS_OVERLAPPEDWINDOW,  // Window style
@@ -46,21 +46,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                                NULL        // Additional application data
     );
 
-    if (hwnd == NULL) {
+    if (hWnd == NULL) {
         MessageBox(NULL, "Window Creation Failed!", "Error!",
                    MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
-    ShowWindow(hwnd, nCmdShow);
+    ShowWindow(hWnd, nCmdShow);
+
+    RECT rect;
+    int width, height;
+    if (GetWindowRect(hWnd, &rect)) {
+        width = rect.right - rect.left;
+        height = rect.bottom - rect.top;
+    } else {
+        MessageBox(NULL, "Get Window Rect Failed!", "Error!",
+                   MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    SoftRenderer renderer(width, height, hWnd);
 
     MSG msg = {};
     while (GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
+
+        renderer.update(hWnd);
     }
 
-    return 0;
+    return (int)msg.wParam;
 }
 
 #else

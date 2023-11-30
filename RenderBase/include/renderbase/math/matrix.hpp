@@ -6,7 +6,7 @@
 namespace RenderBase {
 template <size_t N>
 class Matrix {
-   public:
+public:
     Matrix<N>();
     ~Matrix<N>() {}
 
@@ -23,7 +23,7 @@ class Matrix {
     Matrix<N> transpose() const;
     // TODO: Mat4 determinant & inverse
 
-   private:
+private:
     float _m[4][4];
 };
 

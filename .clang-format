@@ -2,4 +2,6 @@
 BasedOnStyle: Google
 ---
 Language: Cpp
+AccessModifierOffset: -4
+AlignTrailingComments: true
 IndentWidth: 4
