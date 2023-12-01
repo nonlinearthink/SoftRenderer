@@ -1,15 +1,15 @@
 #include "catch2/catch_test_macros.hpp"
-#include "renderbase/math/matrix.hpp"
+#include "renderbase/math/matrix.h"
 
 using namespace RenderBase;
 
 TEST_CASE("Matrix base case", "[Matrix]") {
-    Matrix4 m1{}, m2{};
+    Matrix m1{}, m2{};
 
     SECTION("Matrix addition") {
-        Matrix4 result = (m1 + m2) / 2.f;
+        Matrix result = (m1 + m2) / 2.f;
 
-        Matrix4 compare;
+        Matrix compare;
 
         REQUIRE_FALSE(!(compare == result));
     }
