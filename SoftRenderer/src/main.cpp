@@ -5,7 +5,6 @@
 #include "SDL.h"
 
 int main(int argc, char* argv[]) {
-    std::cout << "Hello SDL" << std::endl;
     if (SDL_Init(SDL_INIT_EVENTS) < 0) {
         SDL_Log("SDL init failed");
         return 1;

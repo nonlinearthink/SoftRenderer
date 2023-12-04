@@ -4,7 +4,7 @@ file(GLOB_RECURSE rendererbase_source_files "src/*.cpp")
 message("RenderBase Header Files: ${rendererbase_header_files}")
 message("RenderBase Source Files: ${rendererbase_source_files}")
 
-add_library(RenderBase ${rendererbase_source_files} ${rendererbase_header_files})
+add_library(RenderBase SHARED ${rendererbase_source_files} ${rendererbase_header_files})
 target_include_directories(RenderBase PUBLIC include)
 set_target_properties(RenderBase PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(RenderBase PUBLIC cxx_std_17)

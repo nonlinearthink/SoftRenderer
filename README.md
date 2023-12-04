@@ -4,7 +4,7 @@ A CPU-based Rasterized Renderer from Scratch.
 
 ## Install
 
-Download third_party:
+Download ThirdParty:
 
 ```bash
 git submodule update --recursive --init
