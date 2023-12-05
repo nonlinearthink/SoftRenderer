@@ -1,6 +1,5 @@
 add_executable(SoftRenderer src/main.cpp)
-target_link_libraries(SoftRenderer PRIVATE SDL2::SDL2)
-target_include_directories(SoftRenderer PUBLIC include)
+target_link_libraries(SoftRenderer PRIVATE SDL2)
 target_compile_features(SoftRenderer PUBLIC cxx_std_17)
 add_custom_command(
     TARGET SoftRenderer POST_BUILD
