@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstddef>
 
-namespace RenderBase {
+namespace SoftRenderer {
 template <typename T>
 class Vector2 {
 public:
@@ -62,11 +62,11 @@ public:
     inline Vector3<T> operator*(const Vector3<T>& rhs) const;
     inline Vector3<T> operator*(const T k) const;
 
-    float length() const;
-    float lengthSquare() const;
-    T dot(const Vector3<T>& rhs) const;
-    Vector3<T> cross(const Vector3<T>& rhs) const;
-    Vector3<T>& normalize();
+    float Length() const;
+    float LengthSquare() const;
+    T Dot(const Vector3<T>& rhs) const;
+    Vector3<T> Cross(const Vector3<T>& rhs) const;
+    Vector3<T>& Normalize();
 };
 
 template <typename T>
@@ -97,33 +97,33 @@ inline Vector3<T> Vector3<T>::operator*(const Vector3<T>& rhs) const {
 
 template <typename T>
 inline Vector3<T> Vector3<T>::operator*(const T k) const {
-    return Vector3(x * k, y * k, x * k);
+    return Vector3(x * k, y * k, z * k);
 };
 
 template <typename T>
-float Vector3<T>::lengthSquare() const {
+float Vector3<T>::LengthSquare() const {
     return x * x + y * y + z * z;
 }
 
 template <typename T>
-float Vector3<T>::length() const {
-    return std::sqrt(lengthSquare());
+float Vector3<T>::Length() const {
+    return std::sqrt(LengthSquare());
 }
 
 template <typename T>
-T Vector3<T>::dot(const Vector3<T>& rhs) const {
+T Vector3<T>::Dot(const Vector3<T>& rhs) const {
     return x * rhs.x + y * rhs.y + z * rhs.z;
 }
 
 template <typename T>
-Vector3<T> Vector3<T>::cross(const Vector3<T>& rhs) const {
+Vector3<T> Vector3<T>::Cross(const Vector3<T>& rhs) const {
     return Vector3<T>(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
                       x * rhs.y - y * rhs.x);
 }
 
 template <typename T>
-Vector3<T>& Vector3<T>::normalize() {
-    float len = length();
+Vector3<T>& Vector3<T>::Normalize() {
+    float len = Length();
     if (len != 0) {
         x /= len;
         y /= len;
@@ -136,4 +136,4 @@ using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
 using Vector3f = Vector3<float>;
 using Vector3i = Vector3<int>;
-}  // namespace RenderBase
+}  // namespace SoftRenderer

@@ -3,9 +3,9 @@
 #include <cmath>
 #include <cstddef>
 
-#include "renderbase/math/vec.hpp"
+#include "SoftRenderer/math/vec.hpp"
 
-namespace RenderBase {
+namespace SoftRenderer {
 class Matrix {
 public:
     Matrix();
@@ -20,11 +20,11 @@ public:
     Matrix operator/(float k) const;
     bool operator==(const Matrix& rhs) const;
 
-    Matrix transpose() const;
-    Vector3f multiplyVector(const Vector3f& vec) const;
+    Matrix Transpose() const;
+    Vector3f MultiplyVector(const Vector3f& vec) const;
 
 private:
-    float _m[16];
+    float m_[16];
 };
 
-}  // namespace RenderBase
+}  // namespace SoftRenderer

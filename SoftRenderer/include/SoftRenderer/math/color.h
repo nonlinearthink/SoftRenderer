@@ -1,6 +1,6 @@
 #pragma once
 
-namespace RenderBase {
+namespace SoftRenderer {
 class Color {
 public:
     float r, g, b, a;
@@ -37,4 +37,4 @@ inline Color Color::operator*(const float k) const {
 inline Color Color::operator/(const float k) const {
     return Color(r / k, g / k, b / k, a / k);
 }
-}  // namespace RenderBase
+}  // namespace SoftRenderer

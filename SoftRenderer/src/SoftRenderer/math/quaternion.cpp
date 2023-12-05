@@ -1,6 +1,6 @@
-#include "renderbase/math/quaternion.h"
+#include "SoftRenderer/math/quaternion.h"
 
-using namespace RenderBase;
+using namespace SoftRenderer;
 
 Quaternion Quaternion::operator*(const Quaternion& q) const {
     return Quaternion(w * q.x + x * q.w + y * q.z - z * q.y,
@@ -9,13 +9,13 @@ Quaternion Quaternion::operator*(const Quaternion& q) const {
                       w * q.w - x * q.x - y * q.y - z * q.z);
 }
 
-Quaternion Quaternion::conjugate() const { return Quaternion(-x, -y, -z, w); }
+Quaternion Quaternion::Conjugate() const { return Quaternion(-x, -y, -z, w); }
 
-float Quaternion::norm() const {
+float Quaternion::Norm() const {
     return std::sqrt(w * w + x * x + y * y + z * z);
 }
 
-Quaternion Quaternion::normalize() const {
-    float n = norm();
+Quaternion Quaternion::Normalize() const {
+    float n = Norm();
     return Quaternion(x / n, y / n, z / n, w / n);
 }

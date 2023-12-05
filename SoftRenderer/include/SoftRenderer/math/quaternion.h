@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace RenderBase {
+namespace SoftRenderer {
 class Quaternion {
 public:
     float x, y, z, w;
@@ -12,10 +12,10 @@ public:
 
     Quaternion operator*(const Quaternion& q) const;
 
-    Quaternion conjugate() const;
+    Quaternion Conjugate() const;
 
-    float norm() const;
+    float Norm() const;
 
-    Quaternion normalize() const;
+    Quaternion Normalize() const;
 };
-};  // namespace RenderBase
+};  // namespace SoftRenderer

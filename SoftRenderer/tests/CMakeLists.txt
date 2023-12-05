@@ -1,7 +1,7 @@
 macro(AddTest target_name)
     add_executable(${target_name} ${target_name}.cpp)
     target_compile_features(${target_name} PUBLIC cxx_std_17)
-    target_link_libraries(${target_name} PRIVATE Catch2::Catch2WithMain RenderBase)
+    target_link_libraries(${target_name} PRIVATE Catch2::Catch2WithMain SoftRenderer)
     add_test(NAME ${target_name} COMMAND $<TARGET_FILE:${target_name}>)
     add_custom_command(
         TARGET ${target_name} POST_BUILD

@@ -1,7 +1,9 @@
-#include "catch2/catch_test_macros.hpp"
-#include "renderbase/math/matrix.h"
+#define CATCH_CONFIG_MAIN
 
-using namespace RenderBase;
+#include "SoftRenderer.h"
+#include "catch2/catch_test_macros.hpp"
+
+using namespace SoftRenderer;
 
 TEST_CASE("Matrix base case", "[Matrix]") {
     Matrix m1{}, m2{};

@@ -11,9 +11,9 @@ set(CMAKE_VERBOSE_MAKEFILEON OFF)
 
 add_subdirectory(ThirdParty)
 
-add_subdirectory(RenderBase)
-
 add_subdirectory(SoftRenderer)
+
+add_subdirectory(Apps)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
