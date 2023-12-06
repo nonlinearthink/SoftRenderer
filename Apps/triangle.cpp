@@ -16,7 +16,7 @@ public:
     DrawTriangle(int width, int height) : RenderApplication(width, height) {}
 
     void render() override {
-        soft_renderer_->DrawWireframeTriangle(
+        renderer_->DrawWireframeTriangle(
             SoftRenderer::Vector2i(width / 2, 0.1 * height),
             SoftRenderer::Vector2i(0.1 * width, 0.9 * height),
             SoftRenderer::Vector2i(0.9 * width, 0.9 * height),

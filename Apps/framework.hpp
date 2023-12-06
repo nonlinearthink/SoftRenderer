@@ -2,6 +2,7 @@
 
 #include "SDL.h"
 #include "SoftRenderer.h"
+#include "SoftRenderer/math/color.h"
 
 /**
  * @brief Deleter of SDL_Window to implement smart pointer
@@ -13,32 +14,6 @@ struct SDL_Window_Deleter {
  *@brief Smart Pointer Implementation of SDL_Window
  */
 using Unique_SDL_Window_Ptr = std::unique_ptr<SDL_Window, SDL_Window_Deleter>;
-
-/**
- * @brief Deleter of SDL_Renderer to implement smart pointer
- */
-struct SDL_Renderer_Deleter {
-    void operator()(SDL_Renderer* renderer) const {
-        SDL_DestroyRenderer(renderer);
-    }
-};
-/**
- *@brief Smart Pointer Implementation of SDL_Renderer
- */
-using Unique_SDL_Renderer_Ptr =
-    std::unique_ptr<SDL_Renderer, SDL_Renderer_Deleter>;
-
-/**
- * @brief Deleter of SDL_Texture to implement smart pointer
- */
-struct SDL_Texture_Deleter {
-    void operator()(SDL_Texture* texture) const { SDL_DestroyTexture(texture); }
-};
-/**
- *@brief Smart Pointer Implementation of SDL_Texture
- */
-using Unique_SDL_Texture_Ptr =
-    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter>;
 
 /**
  * @brief Deleter of SDL_Surface to implement smart pointer
@@ -64,8 +39,8 @@ public:
 
     RenderApplication(int _width, int _height)
         : width(_width), height(_height), running(true) {
-        soft_renderer_ =
-            std::make_unique<SoftRenderer::Renderer>(width, height);
+        renderer_ = std::make_unique<SoftRenderer::Renderer>(
+            width, height, SoftRenderer::Color::Black());
     }
     ~RenderApplication() { SDL_Quit(); }
 
@@ -84,22 +59,6 @@ public:
             return false;
         }
 
-        renderer_ =
-            Unique_SDL_Renderer_Ptr(SDL_CreateRenderer(window_.get(), -1, 0));
-        if (!renderer_) {
-            SDL_Log("create renderer failed.");
-            SDL_Quit();
-            return false;
-        }
-
-        render_target_texture_ = Unique_SDL_Texture_Ptr(SDL_CreateTexture(
-            renderer_.get(), SDL_PIXELFORMAT_RGBA8888, 0, width, height));
-        if (!render_target_texture_) {
-            SDL_Log("create renderer target texture failed.");
-            SDL_Quit();
-            return false;
-        }
-
         event_ = std::make_unique<SDL_Event>();
 
         return true;
@@ -113,31 +72,21 @@ public:
             }
         }
 
-        SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
-        SDL_RenderClear(renderer_.get());
-
-        Unique_SDL_Surface_Ptr surface(SDL_CreateRGBSurfaceWithFormat(
-            0, width, height, 32, SDL_PIXELFORMAT_RGBA8888));
-        soft_renderer_->PrepareRender((Uint32*)surface->pixels);
+        surface_ = Unique_SDL_Surface_Ptr(SDL_GetWindowSurface(window_.get()));
+        renderer_->PrepareRender((Uint32*)surface_->pixels);
+        renderer_->Clear();
 
         render();
 
-        SDL_UpdateTexture(render_target_texture_.get(), NULL, surface->pixels,
-                          surface->pitch);
-
-        SDL_RenderCopy(renderer_.get(), render_target_texture_.get(), NULL,
-                       NULL);
-
-        SDL_RenderPresent(renderer_.get());
+        SDL_UpdateWindowSurface(window_.get());
         SDL_Delay(1000 / 60);
     }
 
     virtual void render() {}
 
 protected:
-    std::unique_ptr<SoftRenderer::Renderer> soft_renderer_;
+    std::unique_ptr<SoftRenderer::Renderer> renderer_;
     Unique_SDL_Window_Ptr window_;
-    Unique_SDL_Renderer_Ptr renderer_;
-    Unique_SDL_Texture_Ptr render_target_texture_;
+    Unique_SDL_Surface_Ptr surface_;
     std::unique_ptr<SDL_Event> event_;
 };

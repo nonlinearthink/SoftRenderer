@@ -2,6 +2,13 @@
 
 using namespace SoftRenderer;
 
+Color::Color(const Color& color) {
+    r = color.r;
+    g = color.g;
+    b = color.b;
+    a = color.a;
+}
+
 Color::Color(float _r, float _g, float _b) : r(_r), g(_g), b(_b), a(1) {}
 
 Color::Color(float _r, float _g, float _b, float _a)

@@ -12,6 +12,14 @@ void Renderer::PrepareRender(uint32_t *frameBuffer) {
     frameBuffer_ = frameBuffer;
 }
 
+void Renderer::Clear() {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            PutPixel(Vector2i(i, j), background);
+        }
+    }
+}
+
 void Renderer::PutPixel(const Vector2i &p, const Color &color) {
     frameBuffer_[p.y * width + p.x] = static_cast<uint32_t>(color);
 }
