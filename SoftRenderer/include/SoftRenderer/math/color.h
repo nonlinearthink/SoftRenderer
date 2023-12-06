@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace SoftRenderer {
 class Color {
 public:
@@ -20,6 +22,8 @@ public:
     inline Color operator-(const Color& rhs) const;
     inline Color operator*(const float k) const;
     inline Color operator/(const float k) const;
+
+    operator uint32_t() const;
 };
 
 inline Color Color::operator+(const Color& rhs) const {
