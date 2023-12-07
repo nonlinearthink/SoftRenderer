@@ -2,28 +2,15 @@
 
 #include "SDL.h"
 #include "SoftRenderer.h"
-#include "SoftRenderer/math/color.h"
 
-/**
- * @brief Deleter of SDL_Window to implement smart pointer
- */
 struct SDL_Window_Deleter {
     void operator()(SDL_Window* window) const { SDL_DestroyWindow(window); }
 };
-/**
- *@brief Smart Pointer Implementation of SDL_Window
- */
 using Unique_SDL_Window_Ptr = std::unique_ptr<SDL_Window, SDL_Window_Deleter>;
 
-/**
- * @brief Deleter of SDL_Surface to implement smart pointer
- */
 struct SDL_Surface_Deleter {
     void operator()(SDL_Surface* surface) const { SDL_FreeSurface(surface); }
 };
-/**
- *@brief Smart Pointer Implementation of SDL_Surface
- */
 using Unique_SDL_Surface_Ptr =
     std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>;
 
@@ -42,7 +29,11 @@ public:
         renderer_ = std::make_unique<SoftRenderer::Renderer>(
             width, height, SoftRenderer::Color::Black());
     }
-    ~RenderApplication() { SDL_Quit(); }
+    ~RenderApplication() {
+        // don't need to release because window will handle it.
+        window_surface_ = nullptr;
+        SDL_Quit();
+    }
 
     bool InitApplication() {
         if (SDL_Init(SDL_INIT_EVENTS) < 0) {
@@ -59,6 +50,8 @@ public:
             return false;
         }
 
+        window_surface_ = SDL_GetWindowSurface(window_.get());
+
         event_ = std::make_unique<SDL_Event>();
 
         return true;
@@ -72,13 +65,23 @@ public:
             }
         }
 
-        surface_ = Unique_SDL_Surface_Ptr(SDL_GetWindowSurface(window_.get()));
-        renderer_->PrepareRender((Uint32*)surface_->pixels);
+        // prepare renderer
+        Unique_SDL_Surface_Ptr render_surface(SDL_CreateRGBSurfaceWithFormat(
+            0, width, height, 32, SDL_PIXELFORMAT_RGBA8888));
+        renderer_->PrepareRender((Uint32*)render_surface->pixels);
+
+        // Clear renderer
         renderer_->Clear();
 
+        // Do a custom render job
         render();
 
+        // Update renderer's surface to window's surface
+        SDL_BlitSurface(render_surface.get(), NULL, window_surface_, NULL);
+        // Update window's surface to screen
         SDL_UpdateWindowSurface(window_.get());
+
+        // Keep a fixed frame rate
         SDL_Delay(1000 / 60);
     }
 
@@ -87,6 +90,6 @@ public:
 protected:
     std::unique_ptr<SoftRenderer::Renderer> renderer_;
     Unique_SDL_Window_Ptr window_;
-    Unique_SDL_Surface_Ptr surface_;
+    SDL_Surface* window_surface_;
     std::unique_ptr<SDL_Event> event_;
 };

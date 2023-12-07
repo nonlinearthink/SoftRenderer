@@ -17,8 +17,8 @@ public:
     ~Renderer() {}
 
     void PrepareRender(uint32_t *frameBuffer);
-    void Clear();
     void PutPixel(const Vector2i &p, const Color &color);
+    void Clear();
     void DrawLine(const Vector2i &p0, const Vector2i &p1, const Color &color);
     void DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
                                const Vector2i &p2, const Color &color);

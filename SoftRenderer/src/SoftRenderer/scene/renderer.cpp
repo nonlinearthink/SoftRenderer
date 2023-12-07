@@ -13,9 +13,10 @@ void Renderer::PrepareRender(uint32_t *frameBuffer) {
 }
 
 void Renderer::Clear() {
+    auto color_data = static_cast<uint32_t>(background);
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            PutPixel(Vector2i(i, j), background);
+            frameBuffer_[j * width + i] = color_data;
         }
     }
 }
