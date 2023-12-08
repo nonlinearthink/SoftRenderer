@@ -6,7 +6,7 @@
 
 using namespace SoftRenderer;
 
-TEST_CASE("Vector2 Test") {
+TEST_CASE("Vector2 Tests") {
     Vector2i v1(1, 2);
     Vector2i v2(3, 4);
     Vector2i v3(5, 6);

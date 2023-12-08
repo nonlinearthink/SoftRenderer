@@ -8,7 +8,10 @@
 namespace SoftRenderer {
 class Matrix {
 public:
-    Matrix();
+    float m[4][4];
+
+    Matrix() : m{} {};
+    Matrix(float _m[4][4]);
     ~Matrix() {}
 
     static Matrix Identity();
@@ -22,9 +25,5 @@ public:
 
     Matrix Transpose() const;
     Vector3f MultiplyVector(const Vector3f& vec) const;
-
-private:
-    float m_[16];
 };
-
 }  // namespace SoftRenderer
