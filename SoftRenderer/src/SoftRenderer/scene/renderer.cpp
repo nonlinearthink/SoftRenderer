@@ -12,9 +12,6 @@ void Renderer::PrepareRender(uint32_t *frameBuffer) {
     frameBuffer_ = frameBuffer;
 }
 
-/**
- * @brief clear frameBuffer
- */
 void Renderer::Clear() {
     auto color_data = static_cast<uint32_t>(background);
     for (int i = 0; i < width; i++) {
@@ -24,18 +21,10 @@ void Renderer::Clear() {
     }
 }
 
-/**
- * @brief put pixel color
- */
 void Renderer::PutPixel(const Vector2i &p, const Color &color) {
     frameBuffer_[p.y * width + p.x] = static_cast<uint32_t>(color);
 }
 
-/**
- * @brief draw a line
- *
- * use digital differential analyzer
- */
 void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
                         const Color &color) {
     // Digital Differential Analyzer
@@ -56,9 +45,6 @@ void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
     }
 }
 
-/**
- * @brief draw a wireframe triangle
- */
 void Renderer::DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
                                      const Vector2i &p2, const Color &color) {
     DrawLine(p0, p1, color);
@@ -66,11 +52,6 @@ void Renderer::DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
     DrawLine(p2, p0, color);
 }
 
-/**
- * @brief draw a filled triangle
- *
- * use bounding rect and barycentric coordinate system
- */
 void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                                   const Vector2i &p2, const Color &color) {
     // Bounding Rect
@@ -81,6 +62,7 @@ void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
     max.x = std::min(max.x, std::max(p0.x, std::max(p1.x, p2.x)));
     max.y = std::min(max.y, std::max(p0.y, std::max(p1.y, p2.y)));
 
+    // Barycentric Coordinate System
     for (int y = min.y; y <= max.y; y++) {
         for (int x = min.x; x <= max.x; x++) {
             Vector3i vx(p1.x - p0.x, p2.x - p0.x, p0.x - x);

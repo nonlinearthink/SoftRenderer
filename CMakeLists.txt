@@ -7,7 +7,7 @@ include(CTest)
 # generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # cmake verbose log
-set(CMAKE_VERBOSE_MAKEFILEON OFF)    
+set(CMAKE_VERBOSE_MAKEFILEON OFF)
 
 add_subdirectory(ThirdParty)
 

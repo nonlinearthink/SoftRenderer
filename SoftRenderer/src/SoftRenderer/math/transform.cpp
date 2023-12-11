@@ -1,19 +1,21 @@
 #include "SoftRenderer/math/transform.h"
 
 #include "SoftRenderer/math/common.h"
-#include "SoftRenderer/math/matrix.h"
+#include "SoftRenderer/math/matrix.hpp"
 
 using namespace SoftRenderer;
 
-Transform& Transform::Translate(const Vector3f _position) {
-    position = _position;
+Matrix4 Transform::GetTransformMatrix() const { return m_; }
 
-    Matrix transform = Matrix::Identity();
-    transform.m[0][3] = position.x;
-    transform.m[1][3] = position.y;
-    transform.m[2][3] = position.z;
+Transform& Transform::Translate(const Vector3f position) {
+    position_ = position;
 
-    m = m * transform;
+    Matrix4 transform = Matrix4::Identity();
+    transform.m[0][3] = position_.x;
+    transform.m[1][3] = position_.y;
+    transform.m[2][3] = position_.z;
+
+    m_ = m_ * transform;
 
     return *this;
 }
@@ -23,15 +25,15 @@ Transform& Transform::RotateX(const float angle) {
     float cos_value = cos(radian);
     float sin_value = sin(radian);
 
-    rotation.x = radian;
+    rotation_.x = radian;
 
-    Matrix transform = Matrix::Identity();
+    Matrix4 transform = Matrix4::Identity();
     transform.m[1][1] = cos_value;
     transform.m[1][2] = -sin_value;
     transform.m[2][1] = sin_value;
     transform.m[2][2] = cos_value;
 
-    m = m * transform;
+    m_ = m_ * transform;
 
     return *this;
 }
@@ -41,15 +43,15 @@ Transform& Transform::RotateY(const float angle) {
     float cos_value = cos(radian);
     float sin_value = sin(radian);
 
-    rotation.y = radian;
+    rotation_.y = radian;
 
-    Matrix transform = Matrix::Identity();
+    Matrix4 transform = Matrix4::Identity();
     transform.m[0][0] = cos_value;
     transform.m[0][2] = sin_value;
     transform.m[2][0] = -sin_value;
     transform.m[2][2] = cos_value;
 
-    m = m * transform;
+    m_ = m_ * transform;
 
     return *this;
 }
@@ -59,37 +61,37 @@ Transform& Transform::RotateZ(const float angle) {
     float cos_value = cos(radian);
     float sin_value = sin(radian);
 
-    rotation.z = radian;
+    rotation_.z = radian;
 
-    Matrix transform = Matrix::Identity();
+    Matrix4 transform = Matrix4::Identity();
     transform.m[0][0] = cos_value;
     transform.m[0][1] = -sin_value;
     transform.m[1][0] = sin_value;
     transform.m[1][1] = cos_value;
 
-    m = m * transform;
+    m_ = m_ * transform;
 
     return *this;
 }
 
-Transform& Transform::Rotation(const Vector3f _rotation) {
-    rotation = _rotation;
-    RotateX(_rotation.x);
-    RotateY(_rotation.y);
-    RotateZ(_rotation.z);
+Transform& Transform::Rotation(const Vector3f rotation) {
+    rotation_ = rotation;
+    RotateX(rotation.x);
+    RotateY(rotation.y);
+    RotateZ(rotation.z);
     return *this;
 }
 
-Transform& Transform::Scale(const Vector3f _scaling) {
-    scaling = _scaling;
+Transform& Transform::Scale(const Vector3f scaling) {
+    scaling_ = scaling;
 
-    Matrix transform;
-    transform.m[0][0] = scaling.x;
-    transform.m[1][1] = scaling.y;
-    transform.m[2][2] = scaling.z;
+    Matrix4 transform;
+    transform.m[0][0] = scaling_.x;
+    transform.m[1][1] = scaling_.y;
+    transform.m[2][2] = scaling_.z;
     transform.m[3][3] = 1;
 
-    m = m * transform;
+    m_ = m_ * transform;
 
     return *this;
 }

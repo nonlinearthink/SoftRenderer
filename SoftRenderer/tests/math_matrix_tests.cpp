@@ -1,63 +1,60 @@
 #define CATCH_CONFIG_MAIN
 
-#include "SoftRenderer/math/matrix.h"
+#include "SoftRenderer/math/matrix.hpp"
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;
 
 TEST_CASE("Matrix Tests", "[Matrix]") {
-    Matrix m0, m1 = Matrix::Identity(), m2{};
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            m2.m[i][j] = i * 4 + j;
-        }
-    }
+    float data[4][4] = {
+        {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+    Matrix4 m4_0{Matrix4::Identity()}, m4_1{data};
 
     SECTION("Identity") {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
-                    REQUIRE(m1.m[i][j] == 1);
+                    REQUIRE(m4_0.m[i][j] == 1);
                 } else {
-                    REQUIRE(m1.m[i][j] == 0);
+                    REQUIRE(m4_0.m[i][j] == 0);
                 }
             }
         }
     }
 
     SECTION("Addition") {
-        Matrix result = m0 + Matrix::Identity();
+        Matrix4 result = m4_0 + m4_1;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
-                    REQUIRE(result.m[i][j] == 1);
+                    REQUIRE(result.m[i][j] == 2 + i * 4 + j);
                 } else {
-                    REQUIRE(result.m[i][j] == 0);
+                    REQUIRE(result.m[i][j] == 1 + i * 4 + j);
                 }
             }
         }
     }
 
     SECTION("Subtraction") {
-        Matrix result = m0 - m1;
+        Matrix4 result = m4_0 - m4_1;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
-                    REQUIRE(result.m[i][j] == -1);
+                    REQUIRE(result.m[i][j] == -i * 4 - j);
                 } else {
-                    REQUIRE(result.m[i][j] == 0);
+                    REQUIRE(result.m[i][j] == -1 - i * 4 - j);
                 }
             }
         }
     }
 
     SECTION("Multiplication") {
-        Matrix result = m2 * Matrix::Identity();
-        // Add your own checks
+        Matrix4 result = m4_0 * m4_1;
+        REQUIRE(result == m4_1);
     }
 
     SECTION("Scalar multiplication") {
-        Matrix result = m1 * 2.0f;
+        Matrix4 result = m4_0 * 2.0f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -70,7 +67,7 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Scalar division") {
-        Matrix result = m1 / 2.0f;
+        Matrix4 result = m4_0 / 2.0f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -83,13 +80,23 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Transpose") {
-        Matrix result = m0.Transpose();
-        // Add your own checks
+        Matrix4 result = m4_1.Transpose();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                REQUIRE(result.m[i][j] == m4_1.m[j][i]);
+            }
+        }
     }
 
-    SECTION("Vector multiplication") {
-        Vector3f v;
-        v = m0.MultiplyVector(v);
-        // Add your own checks
+    SECTION("Vector Determinant") {
+        float data2[2][2]{{1, 2}, {3, 4}};
+        Matrix2 m2 = Matrix2(data2);
+        REQUIRE(m2.Determinant() == -2);
+
+        float data3[3][3]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix3 m3 = Matrix3(data3);
+        REQUIRE(m3.Determinant() == 0);
+
+        REQUIRE(m4_1.Determinant() == 0);
     }
 }
