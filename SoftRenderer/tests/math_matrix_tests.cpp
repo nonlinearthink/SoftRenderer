@@ -6,24 +6,25 @@
 using namespace SoftRenderer;
 
 TEST_CASE("Matrix Tests", "[Matrix]") {
-    float data[4][4] = {
-        {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
-    Matrix4 m4_0{Matrix4::Identity()}, m4_1{data};
+    Matrix2 mat2{1, 2, 3, 4};
+    Matrix3 mat3{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    Matrix4 mat4i{Matrix4::Identity()},
+        mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
     SECTION("Identity") {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
-                    REQUIRE(m4_0.m[i][j] == 1);
+                    REQUIRE(mat4i.m[i][j] == 1);
                 } else {
-                    REQUIRE(m4_0.m[i][j] == 0);
+                    REQUIRE(mat4i.m[i][j] == 0);
                 }
             }
         }
     }
 
     SECTION("Addition") {
-        Matrix4 result = m4_0 + m4_1;
+        Matrix4 result = mat4i + mat4;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -36,7 +37,7 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Subtraction") {
-        Matrix4 result = m4_0 - m4_1;
+        Matrix4 result = mat4i - mat4;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -49,12 +50,12 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Multiplication") {
-        Matrix4 result = m4_0 * m4_1;
-        REQUIRE(result == m4_1);
+        Matrix4 result = mat4i * mat4;
+        REQUIRE(result == mat4);
     }
 
     SECTION("Scalar multiplication") {
-        Matrix4 result = m4_0 * 2.0f;
+        Matrix4 result = mat4i * 2.0f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -67,7 +68,7 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Scalar division") {
-        Matrix4 result = m4_0 / 2.0f;
+        Matrix4 result = mat4i / 2.0f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -80,30 +81,30 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Transpose") {
-        Matrix4 result = m4_1.Transpose();
+        Matrix4 result = mat4.Transpose();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                REQUIRE(result.m[i][j] == m4_1.m[j][i]);
+                REQUIRE(result.m[i][j] == mat4.m[j][i]);
             }
         }
     }
 
-    float data2[2][2]{{1, 2}, {3, 4}};
-    Matrix2 m2 = Matrix2(data2);
-    float data3[3][3]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    Matrix3 m3 = Matrix3(data3);
-
     SECTION("Determinant") {
-        REQUIRE(m2.Determinant() == -2);
-        REQUIRE(m3.Determinant() == 0);
-        REQUIRE(m4_1.Determinant() == 0);
+        REQUIRE(mat2.Determinant() == -2);
+        REQUIRE(mat3.Determinant() == 0);
+        REQUIRE(mat4.Determinant() == 0);
     }
 
     SECTION("Inverse") {
-        auto m2t = m2.Inverse();
-        REQUIRE(m2t.has_value());
-        float data2[2][2]{{-2, 1}, {1.5, -0.5}};
-        Matrix2 m2t_check = Matrix2(data2);
-        REQUIRE(m2t.value() == m2t_check);
+        auto mat2inverse = mat2.Inverse();
+        REQUIRE(mat2inverse.has_value());
+        Matrix2 mat2check{-2, 1, 1.5, -0.5};
+        REQUIRE(mat2inverse.value() == mat2check);
+
+        auto mat3inverse = mat3.Inverse();
+        REQUIRE(!mat3inverse.has_value());
+
+        auto mat4inverse = mat4.Inverse();
+        REQUIRE(!mat4inverse.has_value());
     }
 }
