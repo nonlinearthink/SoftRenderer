@@ -88,15 +88,22 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
         }
     }
 
-    SECTION("Vector Determinant") {
-        float data2[2][2]{{1, 2}, {3, 4}};
-        Matrix2 m2 = Matrix2(data2);
+    float data2[2][2]{{1, 2}, {3, 4}};
+    Matrix2 m2 = Matrix2(data2);
+    float data3[3][3]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Matrix3 m3 = Matrix3(data3);
+
+    SECTION("Determinant") {
         REQUIRE(m2.Determinant() == -2);
-
-        float data3[3][3]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        Matrix3 m3 = Matrix3(data3);
         REQUIRE(m3.Determinant() == 0);
-
         REQUIRE(m4_1.Determinant() == 0);
+    }
+
+    SECTION("Inverse") {
+        auto m2t = m2.Inverse();
+        REQUIRE(m2t.has_value());
+        float data2[2][2]{{-2, 1}, {1.5, -0.5}};
+        Matrix2 m2t_check = Matrix2(data2);
+        REQUIRE(m2t.value() == m2t_check);
     }
 }

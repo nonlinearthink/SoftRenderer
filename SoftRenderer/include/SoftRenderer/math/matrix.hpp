@@ -1,8 +1,10 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstddef>
+#include <optional>
 
 #include "SoftRenderer/math/common.h"
 #include "SoftRenderer/math/vec.hpp"
@@ -10,6 +12,8 @@
 namespace SoftRenderer {
 template <size_t N>
 class Matrix {
+    static_assert(N > 1, "Size of the matrix must be greater than 1");
+
 public:
     float m[N][N];
 
@@ -27,8 +31,10 @@ public:
     bool operator==(const Matrix<N>& rhs) const;
 
     Matrix<N> Transpose() const;
-    inline float Determinant() const;
-    Matrix<N> Inverse() const;
+    float Cofactor(size_t row, size_t col) const;
+    float Determinant() const;
+    Matrix<N> Adjoint() const;
+    std::optional<Matrix<N>> Inverse() const;
 };
 
 template <size_t N>
@@ -129,27 +135,89 @@ Matrix<N> Matrix<N>::Transpose() const {
 }
 
 template <>
+inline float Matrix<2>::Cofactor(size_t row, size_t col) const {
+    assert(row < 2 && col < 2);
+    return m[1 - row][1 - col];
+}
+
+template <size_t N>
+float Matrix<N>::Cofactor(size_t row, size_t col) const {
+    Matrix<N - 1> minor;
+    int ti = 0;
+    int tj = 0;
+    for (int i = 0; i < N; i++, ti++) {
+        if (i == row) {
+            continue;
+        }
+        tj = 0;
+        for (int j = 0; j < N; j++, tj++) {
+            if (j == col) {
+                continue;
+            }
+            minor.m[ti][tj] = m[i][j];
+        }
+    }
+    float sign = ((row + col) & 1) ? -1 : 1;
+    return sign * m[row][col] * minor.Determinant();
+}
+
+/**
+ * Accelerating the computation of the determinant of Matrix2
+ */
+template <>
 inline float Matrix<2>::Determinant() const {
     return m[0][0] * m[1][1] - m[0][1] * m[1][0];
 }
 
+/**
+ * Accelerating the computation of the determinant of Matrix3
+ */
+template <>
+inline float Matrix<3>::Determinant() const {
+    return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+           m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+           m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+}
+
+/**
+ * Use cofactor expansions to compute determinant, expand the first row of the
+ * matrix.
+ */
 template <size_t N>
-inline float Matrix<N>::Determinant() const {
-    Matrix<N - 1> sub_matrix;
+float Matrix<N>::Determinant() const {
     float det = 0;
-    for (int i = 0; i < N; i++) {
-        for (int j = 1; j < N; j++) {
-            int col = 0;
-            for (int k = 0; k < N; k++) {
-                if (j != k) {
-                    sub_matrix.m[j - 1][col++] = m[j][k];
-                }
-            }
-        }
-        float sign = (i & 1) ? -1 : 1;
-        det += sign * m[0][i] * sub_matrix.Determinant();
+    for (int k = 0; k < N; k++) {
+        det += Cofactor(0, k);
     }
     return det;
+}
+
+template <size_t N>
+Matrix<N> Matrix<N>::Adjoint() const {
+    Matrix<N> result;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            result.m[i][j] = Cofactor(i, j);
+        }
+    }
+    return result;
+}
+
+template <size_t N>
+std::optional<Matrix<N>> Matrix<N>::Inverse() const {
+    std::optional<Matrix<N>> result;
+    float det = Determinant();
+    if (det == 0) {
+        return result;
+    }
+    Matrix<N> temp;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            temp.m[i][j] = Cofactor(i, j) / det;
+        }
+    }
+    result.emplace(temp);
+    return result;
 }
 
 // Vector3f Matrix::MultiplyVector(const Vector3f& vec) const {
