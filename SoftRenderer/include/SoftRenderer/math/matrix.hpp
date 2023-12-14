@@ -26,7 +26,7 @@ public:
      * @brief Constructor for uniform initialization
      * @param list A float initializer list, e.g. {1.0, 2.0, 3.0, 4.0}
      */
-    Matrix(const std::initializer_list<float>& list);
+    explicit Matrix(const std::initializer_list<float>& list);
     ~Matrix() = default;
 
     /**
@@ -176,6 +176,10 @@ Matrix<N> Matrix<N>::Transpose() const {
 
 template <>
 inline float Matrix<2>::Cofactor(size_t row, size_t col) const {
+    /**
+     * Prevents the template class from continuing to create Matrix<1>'s
+     * Cofactor function
+     */
     assert(row < 2 && col < 2);
     float sign = ((row + col) & 1) ? -1 : 1;
     return sign * m[1 - row][1 - col];

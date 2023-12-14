@@ -8,7 +8,7 @@ public:
     float r, g, b, a;
 
     Color(){};
-    Color(const Color& color);
+    explicit Color(const Color& color);
     Color(float _r, float _g, float _b);
     Color(float _r, float _g, float _b, float _a);
     ~Color(){};
@@ -23,8 +23,9 @@ public:
     inline Color operator-(const Color& rhs) const;
     inline Color operator*(const float k) const;
     inline Color operator/(const float k) const;
+    explicit operator uint32_t() const;
 
-    operator uint32_t() const;
+    void CopyFrom(const Color& color);
 };
 
 inline Color Color::operator+(const Color& rhs) const {

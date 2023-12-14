@@ -4,5 +4,7 @@
 #include "SoftRenderer/math/common.h"
 #include "SoftRenderer/math/matrix.hpp"
 #include "SoftRenderer/math/quaternion.h"
+#include "SoftRenderer/math/transform.h"
 #include "SoftRenderer/math/vec.hpp"
 #include "SoftRenderer/scene/renderer.h"
+#include "SoftRenderer/scene/vertex.h"

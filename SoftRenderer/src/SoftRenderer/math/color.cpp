@@ -29,3 +29,10 @@ Color::operator uint32_t() const {
            (static_cast<uint32_t>(g * 255) << 16) |
            (static_cast<uint32_t>(b * 255) << 8) | static_cast<uint32_t>(255);
 }
+
+void Color::CopyFrom(const Color& color) {
+    r = color.r;
+    g = color.g;
+    b = color.b;
+    a = color.a;
+}

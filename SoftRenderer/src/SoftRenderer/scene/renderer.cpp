@@ -8,21 +8,25 @@
 
 using namespace SoftRenderer;
 
-void Renderer::PrepareRender(uint32_t *frameBuffer) {
-    frameBuffer_ = frameBuffer;
+void Renderer::set_background(const Color &background) {
+    background_.CopyFrom(background);
+}
+
+void Renderer::PrepareRender(uint32_t *frame_buffer) {
+    frame_buffer_ = frame_buffer;
 }
 
 void Renderer::Clear() {
-    auto color_data = static_cast<uint32_t>(background);
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            frameBuffer_[j * width + i] = color_data;
+    auto color_data = static_cast<uint32_t>(background_);
+    for (int i = 0; i < width_; i++) {
+        for (int j = 0; j < height_; j++) {
+            frame_buffer_[j * width_ + i] = color_data;
         }
     }
 }
 
 void Renderer::PutPixel(const Vector2i &p, const Color &color) {
-    frameBuffer_[p.y * width + p.x] = static_cast<uint32_t>(color);
+    frame_buffer_[p.y * width_ + p.x] = static_cast<uint32_t>(color);
 }
 
 void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
@@ -56,7 +60,7 @@ void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                                   const Vector2i &p2, const Color &color) {
     // Bounding Rect
     Vector2i min(0, 0);
-    Vector2i max(width - 1, height - 1);
+    Vector2i max(width_ - 1, height_ - 1);
     min.x = std::max(min.x, std::min(p0.x, std::min(p1.x, p2.x)));
     min.y = std::max(min.y, std::min(p0.y, std::min(p1.y, p2.y)));
     max.x = std::min(max.x, std::max(p0.x, std::max(p1.x, p2.x)));

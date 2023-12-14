@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SoftRenderer/math/quaternion.h"
 #include "SoftRenderer/math/transform.h"
 #include "SoftRenderer/math/vec.hpp"

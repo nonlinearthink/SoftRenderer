@@ -11,7 +11,8 @@ public:
 
     Vector2<T>() : x(), y() {}
     Vector2<T>(T _x, T _y) : x(_x), y(_y) {}
-    Vector2<T>(const Vector2<T>& v) : x(v.x), y(v.y) {}
+    explicit Vector2<T>(const Vector2<T>& v) : x(v.x), y(v.y) {}
+    ~Vector2<T>() = default;
 
     T operator[](size_t n) const;
     inline Vector2<T> operator+(const Vector2<T>& rhs) const;
@@ -57,6 +58,7 @@ public:
     Vector3<T>() : x(), y(), z() {}
     Vector3<T>(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
     Vector3<T>(const Vector3<T>& v) : x(v.x), y(v.y), z(v.z) {}
+    ~Vector3<T>() = default;
 
     T operator[](size_t n) const;
     inline Vector3<T> operator+(const Vector3<T>& rhs) const;

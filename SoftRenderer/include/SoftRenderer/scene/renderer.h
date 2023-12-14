@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <cstdint>
@@ -10,14 +9,13 @@
 namespace SoftRenderer {
 class Renderer {
 public:
-    int width, height;
-    Color background;
-
-    Renderer(int _width, int _height, const Color &_color)
-        : width(_width), height(_height), background(_color){};
+    Renderer(int width, int height)
+        : width_(width), height_(height), background_(Color::Black()){};
     ~Renderer() {}
 
-    void PrepareRender(uint32_t *frameBuffer);
+    void set_background(const Color &background);
+
+    void PrepareRender(uint32_t *frame_buffer);
     /**
      * @brief clear frameBuffer
      */
@@ -51,6 +49,8 @@ public:
                         const Vector3f &p2, const Matrix4 &mvp);
 
 private:
-    uint32_t *frameBuffer_;
+    int width_, height_;
+    Color background_;
+    uint32_t *frame_buffer_;
 };
 };  // namespace SoftRenderer
