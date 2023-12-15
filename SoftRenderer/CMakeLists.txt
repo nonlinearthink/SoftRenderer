@@ -4,8 +4,10 @@ file(GLOB_RECURSE SOFTRENDERER_SOURCE_FILES "src/*.cpp")
 set(SOFTRENDERER_HEADERS ${SOFTRENDERER_HEADER_FILES})
 set(SOFTRENDERER_SOURCES ${SOFTRENDERER_SOURCE_FILES})
 
-message("SoftRenderer Header Files: ${SOFTRENDERER_HEADERS}")
-message("SoftRenderer Source Files: ${SOFTRENDERER_SOURCES}")
+if(PRINT_CMAKE_DEBUG_MESSAGE)
+    message("SoftRenderer Header Files: ${SOFTRENDERER_HEADERS}")
+    message("SoftRenderer Source Files: ${SOFTRENDERER_SOURCES}")
+endif()
 
 add_library(SoftRenderer SHARED ${SOFTRENDERER_HEADERS} ${SOFTRENDERER_SOURCES})
 target_include_directories(SoftRenderer PUBLIC include)

@@ -9,7 +9,7 @@
 // Set SDL Main Entry Point
 #define SDL_MAIN_HANDLED
 
-#include "framework.hpp"
+#include "lib/framework.hpp"
 
 class DrawTriangle : public RenderApplication {
 public:

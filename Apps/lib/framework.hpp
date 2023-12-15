@@ -26,8 +26,7 @@ public:
 
     RenderApplication(int _width, int _height)
         : width(_width), height(_height), running(true) {
-        renderer_ = std::make_unique<SoftRenderer::Renderer>(
-            width, height, SoftRenderer::Color::Black());
+        renderer_ = std::make_unique<SoftRenderer::Renderer>(width, height);
     }
     ~RenderApplication() {
         // don't need to release because window will handle it.

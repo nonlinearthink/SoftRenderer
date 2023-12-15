@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SoftRenderer/math/matrix.hpp"
 #include "SoftRenderer/math/vec.hpp"
 
