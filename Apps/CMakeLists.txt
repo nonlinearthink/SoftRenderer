@@ -16,6 +16,6 @@ add_custom_target(CopyAssets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/CopyAssets.cmake
 )
 
-AddApp(TriangleApp triangle.cpp lib/framework.hpp)
+AddApp(TriangleApp triangle.cpp lib/framework.h lib/framework.cpp)
 AddApp(ModelApp model.cpp)
 add_dependencies(ModelApp CopyAssets)

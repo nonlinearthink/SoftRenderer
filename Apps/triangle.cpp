@@ -9,14 +9,14 @@
 // Set SDL Main Entry Point
 #define SDL_MAIN_HANDLED
 
-#include "lib/framework.hpp"
+#include "lib/framework.h"
 
 class DrawTriangle : public RenderApplication {
 public:
     DrawTriangle(int width, int height) : RenderApplication(width, height) {}
 
-    void render() override {
-        renderer_->DrawFilledTriangle(
+    void Render() override {
+        _renderer->DrawFilledTriangle(
             SoftRenderer::Vector2i(width / 2, 0.1 * height),
             SoftRenderer::Vector2i(0.1 * width, 0.9 * height),
             SoftRenderer::Vector2i(0.9 * width, 0.9 * height),
@@ -32,13 +32,11 @@ int main(int argc, char* argv[]) {
     const int height = 480;
 
     auto app = std::make_unique<DrawTriangle>(width, height);
-    if (!app->InitApplication()) {
+    if (!app->Initialize()) {
         return 1;
     }
 
-    while (app->running) {
-        app->Tick();
-    }
+    app->Run();
 
     return 0;
 }

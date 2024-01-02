@@ -3,12 +3,14 @@
 #include <cmath>
 #include <limits>
 
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
-
 namespace SoftRenderer {
-static constexpr float pi() noexcept { return M_PI; }
+static constexpr float pi() noexcept {
+#ifdef M_PI
+    return M_PI;
+#else
+    return 3.141592653589793;
+#endif
+}
 
 inline double DegreeToRadian(double degree) { return degree * (pi() / 180); }
 
