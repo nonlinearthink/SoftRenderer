@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 
-#include "SoftRenderer/math/matrix.hpp"
+#include "SoftRenderer/matrix.h"
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;
@@ -96,15 +96,15 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Inverse") {
-        auto mat2inverse = mat2.Inverse();
+        auto mat2inverse = mat2.Invert();
         REQUIRE(mat2inverse.has_value());
         Matrix2 mat2check{-2, 1, 1.5, -0.5};
         REQUIRE(mat2inverse.value() == mat2check);
 
-        auto mat3inverse = mat3.Inverse();
+        auto mat3inverse = mat3.Invert();
         REQUIRE(!mat3inverse.has_value());
 
-        auto mat4inverse = mat4.Inverse();
+        auto mat4inverse = mat4.Invert();
         REQUIRE(!mat4inverse.has_value());
     }
 }

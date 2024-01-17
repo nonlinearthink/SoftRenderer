@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 
-#include "SoftRenderer/math/common.h"
-#include "SoftRenderer/math/vec.hpp"
+#include "SoftRenderer/common.h"
+#include "SoftRenderer/vec.h"
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;

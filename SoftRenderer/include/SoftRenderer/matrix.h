@@ -6,32 +6,26 @@
 #include <cstddef>
 #include <optional>
 
-#include "SoftRenderer/math/common.h"
-#include "SoftRenderer/math/vec.hpp"
+#include "SoftRenderer/common.h"
+#include "SoftRenderer/matrix.h"
+#include "SoftRenderer/vec.h"
 
 namespace SoftRenderer {
-/**
- * @brief Template matrix class
- * @tparam N Dimension of matrix
- */
+// Matrix Template Class
 template <size_t N>
 class Matrix {
+    // Matrix<1> is meanningless.
     static_assert(N > 1, "Size of the matrix must be greater than 1");
 
 public:
-    float m[N][N];  /// Matrix data
+    // Matrix data
+    float m[N][N]{};
 
-    Matrix() : m{} {};
-    /**
-     * @brief Constructor for uniform initialization
-     * @param list A float initializer list, e.g. {1.0, 2.0, 3.0, 4.0}
-     */
-    explicit Matrix(const std::initializer_list<float>& list);
-    ~Matrix() = default;
+    Matrix() = default;
+    // Constructor for uniform initialization
+    Matrix(const std::initializer_list<float>& list);
 
-    /**
-     * @brief Get an identity matrix
-     */
+    // Get an identity matrix
     static Matrix<N> Identity();
 
     Matrix<N> operator+(const Matrix<N>& rhs) const;
@@ -41,39 +35,20 @@ public:
     Matrix<N> operator/(float k) const;
     bool operator==(const Matrix<N>& rhs) const;
 
-    /**
-     * @brief Get the transpose matrix
-     * @return A matrix has the same dimension
-     */
-    Matrix<N> Transpose() const;
-    /**
-     * @brief Compute the cofactor of matrix
-     * @see
-     * https://en.wikipedia.org/wiki/Minor_(linear_algebra)#Applications_of_minors_and_cofactors
-     * @param row The cofactor expansion row
-     * @param col The cofactor expansion col
-     * @return A float cofactor value with a sign
-     */
-    float Cofactor(size_t row, size_t col) const;
-    /**
-     * @brief Compute the determinant of matrix
-     * @see https://en.wikipedia.org/wiki/Determinant#Definition
-     * @return A float matrix determinant value
-     */
-    float Determinant() const;
-    /**
-     * @brief Compute the adjoint matrix
-     * @see https://en.wikipedia.org/wiki/Adjugate_matrix#Definition
-     * @return A matrix has the same dimension
-     */
-    Matrix<N> Adjoint() const;
-    /**
-     * @brief Compute the inverse matrix
-     * @return a optional matrix has the same dimension
-     *  @retval return std::nullopt if there's no inverse matrix, otherwise
-     * return a matrix wrapped by a optional
-     */
-    std::optional<Matrix<N>> Inverse() const;
+    // Get the transpose matrix
+    [[nodiscard]] Matrix<N> Transpose() const;
+    // Compute the cofactor of matrix, more details:
+    // https://en.wikipedia.org/wiki/Minor_(linear_algebra)#Applications_of_minors_and_cofactors
+    [[nodiscard]] float Cofactor(size_t row, size_t col) const;
+    // Compute the determinant of matrix, more details:
+    // https://en.wikipedia.org/wiki/Determinant#Definition
+    [[nodiscard]] float Determinant() const;
+    // Compute the adjoint matrix, more details:
+    // https://en.wikipedia.org/wiki/Adjugate_matrix#Definition
+    [[nodiscard]] Matrix<N> Adjoint() const;
+    // Compute the inverse matrix, return std::nullopt if there's no inverse
+    // matrix, otherwise return a matrix wrapped by a optional
+    [[nodiscard]] std::optional<Matrix<N>> Invert() const;
 };
 
 template <size_t N>
@@ -87,11 +62,7 @@ Matrix<N>::Matrix(const std::initializer_list<float>& list) {
 
 template <size_t N>
 Matrix<N> Matrix<N>::Identity() {
-    Matrix<N> result;
-    for (size_t i = 0; i < N; ++i) {
-        result.m[i][i] = 1.0f;
-    }
-    return result;
+    return {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 }
 
 template <size_t N>
@@ -176,10 +147,8 @@ Matrix<N> Matrix<N>::Transpose() const {
 
 template <>
 inline float Matrix<2>::Cofactor(size_t row, size_t col) const {
-    /**
-     * Prevents the template class from continuing to create Matrix<1>'s
-     * Cofactor function
-     */
+    // Prevents the template class from continuing to create Matrix<1>'s
+    // Cofactor function
     assert(row < 2 && col < 2);
     float sign = ((row + col) & 1) ? -1 : 1;
     return sign * m[1 - row][1 - col];
@@ -210,13 +179,13 @@ float Matrix<N>::Cofactor(size_t row, size_t col) const {
 
 template <>
 inline float Matrix<2>::Determinant() const {
-    /// Accelerating the computation of the determinant of Matrix2
+    // Accelerating the computation of the determinant of Matrix2
     return m[0][0] * m[1][1] - m[0][1] * m[1][0];
 }
 
 template <>
 inline float Matrix<3>::Determinant() const {
-    /// Accelerating the computation of the determinant of Matrix3
+    // Accelerating the computation of the determinant of Matrix3
     return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
            m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
            m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
@@ -224,10 +193,8 @@ inline float Matrix<3>::Determinant() const {
 
 template <size_t N>
 float Matrix<N>::Determinant() const {
-    /**
-     * Use cofactor expansions to compute determinant, expand the first row of
-     * the matrix.
-     */
+    // Use cofactor expansions to compute determinant, expand the first row of
+    // the matrix.
     float det = 0;
     for (int k = 0; k < N; k++) {
         det += Cofactor(0, k);
@@ -247,8 +214,8 @@ Matrix<N> Matrix<N>::Adjoint() const {
 }
 
 template <size_t N>
-std::optional<Matrix<N>> Matrix<N>::Inverse() const {
-    /// Use adjoint matrix and determinant to compute the inverse matrix
+std::optional<Matrix<N>> Matrix<N>::Invert() const {
+    /// Use adjoint matrix and determinant to compute the inverse matrix.
     std::optional<Matrix<N>> result;
     float det = Determinant();
     if (det == 0) {

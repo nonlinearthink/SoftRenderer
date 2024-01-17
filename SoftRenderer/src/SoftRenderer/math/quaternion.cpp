@@ -1,4 +1,4 @@
-#include "SoftRenderer/math/quaternion.h"
+#include "SoftRenderer/quaternion.h"
 
 using namespace SoftRenderer;
 

@@ -20,7 +20,7 @@ public:
             SoftRenderer::Vector2i(width / 2, 0.1 * height),
             SoftRenderer::Vector2i(0.1 * width, 0.9 * height),
             SoftRenderer::Vector2i(0.9 * width, 0.9 * height),
-            SoftRenderer::Color::White());
+            SoftRenderer::Color::Green());
     }
 };
 

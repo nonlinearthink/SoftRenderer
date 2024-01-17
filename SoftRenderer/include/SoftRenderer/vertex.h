@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoftRenderer/math/vec.hpp"
+#include "SoftRenderer/vec.h"
 
 namespace SoftRenderer {
 struct Vertex {

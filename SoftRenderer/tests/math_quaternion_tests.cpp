@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 
-#include "SoftRenderer/math/common.h"
-#include "SoftRenderer/math/quaternion.h"
+#include "SoftRenderer/common.h"
+#include "SoftRenderer/quaternion.h"
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;

@@ -1,16 +1,12 @@
-#include "SoftRenderer/scene/renderer.h"
+#include "SoftRenderer/renderer.h"
 
 #include <algorithm>
 #include <cmath>
 
-#include "SoftRenderer/math/color.h"
-#include "SoftRenderer/math/vec.hpp"
+#include "SoftRenderer/color.h"
+#include "SoftRenderer/vec.h"
 
 using namespace SoftRenderer;
-
-void Renderer::set_background(const Color &background) {
-    background_.CopyFrom(background);
-}
 
 void Renderer::PrepareRender(uint32_t *frame_buffer) {
     frame_buffer_ = frame_buffer;
@@ -37,13 +33,13 @@ void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
 
     int steps = std::max(std::abs(dx), std::abs(dy));
 
-    float x_increase = dx / (float)steps;
-    float y_increase = dy / (float)steps;
+    float x_increase = (float)dx / (float)steps;
+    float y_increase = (float)dy / (float)steps;
 
-    float x_paint = p0.x;
-    float y_paint = p0.y;
+    auto x_paint = (float)p0.x;
+    auto y_paint = (float)p0.y;
     for (int i = 0; i <= steps; i++) {
-        PutPixel(Vector2i(round(x_paint), round(y_paint)), color);
+        PutPixel(Vector2i((int)round(x_paint), (int)round(y_paint)), color);
         x_paint += x_increase;
         y_paint += y_increase;
     }
@@ -59,12 +55,10 @@ void Renderer::DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
 void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                                   const Vector2i &p2, const Color &color) {
     // Bounding Rect
-    Vector2i min(0, 0);
-    Vector2i max(width_ - 1, height_ - 1);
-    min.x = std::max(min.x, std::min(p0.x, std::min(p1.x, p2.x)));
-    min.y = std::max(min.y, std::min(p0.y, std::min(p1.y, p2.y)));
-    max.x = std::min(max.x, std::max(p0.x, std::max(p1.x, p2.x)));
-    max.y = std::min(max.y, std::max(p0.y, std::max(p1.y, p2.y)));
+    Vector2i min{std::max(0, std::min(p0.x, std::min(p1.x, p2.x))),
+                 std::max(0, std::min(p0.y, std::min(p1.y, p2.y)))};
+    Vector2i max(std::min(width_ - 1, std::max(p0.x, std::max(p1.x, p2.x))),
+                 std::min(height_ - 1, std::max(p0.y, std::max(p1.y, p2.y))));
 
     // Barycentric Coordinate System
     for (int y = min.y; y <= max.y; y++) {
@@ -78,8 +72,9 @@ void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                 continue;
             }
 
-            Vector3f barycentric(1.f - (u.x + u.y) / (float)u.z,
-                                 u.x / (float)u.z, u.y / (float)u.z);
+            Vector3f barycentric(1.f - (float)(u.x + u.y) / (float)u.z,
+                                 (float)u.x / (float)u.z,
+                                 (float)u.y / (float)u.z);
             if (barycentric.x > 0 && barycentric.x < 1 && barycentric.y > 0 &&
                 barycentric.y < 1 && barycentric.z > 0 && barycentric.z < 1) {
                 PutPixel(Vector2i(x, y), color);

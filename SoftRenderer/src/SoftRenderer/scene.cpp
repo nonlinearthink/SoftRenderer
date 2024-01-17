@@ -1,4 +1,4 @@
-#include "SoftRenderer/scene/scene.h"
+#include "SoftRenderer/scene.h"
 
 using namespace SoftRenderer;
 

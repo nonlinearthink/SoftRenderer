@@ -4,15 +4,13 @@
 #include <string>
 #include <vector>
 
-#include "SoftRenderer/loader/obj_loader.h"
-#include "SoftRenderer/scene/mesh.h"
+#include "SoftRenderer/mesh.h"
+#include "SoftRenderer/obj_loader.h"
+
 
 namespace SoftRenderer {
 class Scene {
 public:
-    Scene() {}
-    ~Scene() {}
-
     bool LoadAssetsFromFile(std::string path);
 
 private:
