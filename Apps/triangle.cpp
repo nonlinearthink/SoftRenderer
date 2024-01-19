@@ -17,9 +17,11 @@ public:
 
     void Render() override {
         _renderer->DrawFilledTriangle(
-            SoftRenderer::Vector2i(width / 2, 0.1 * height),
-            SoftRenderer::Vector2i(0.1 * width, 0.9 * height),
-            SoftRenderer::Vector2i(0.9 * width, 0.9 * height),
+            SoftRenderer::Vector2i(width / 2, static_cast<int>(0.1 * height)),
+            SoftRenderer::Vector2i(static_cast<int>(0.1 * width),
+                                   static_cast<int>(0.9 * height)),
+            SoftRenderer::Vector2i(static_cast<int>(0.9 * width),
+                                   static_cast<int>(0.9 * height)),
             SoftRenderer::Color::Green());
     }
 };

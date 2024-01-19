@@ -1,8 +1,10 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "SoftRenderer/mesh.h"
@@ -12,12 +14,11 @@ namespace SoftRenderer {
 // Load .obj model file and .mtl material file to scene
 class ObjLoader {
 public:
-    explicit ObjLoader(std::string path) : path_{std::move(path)}, world_{} {};
+    explicit ObjLoader(std::string path) : path_{std::move(path)} {};
 
-    bool LoadModel();
+    bool LoadModel(std::vector<std::shared_ptr<Mesh>>& world);
 
 private:
     std::string path_;
-    std::vector<std::shared_ptr<SoftRenderer::Mesh>> world_{};
 };
 }  // namespace SoftRenderer

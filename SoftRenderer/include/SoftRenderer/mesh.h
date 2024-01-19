@@ -1,7 +1,7 @@
 #pragma once
 
+#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "SoftRenderer/transform.h"
@@ -11,20 +11,19 @@
 namespace SoftRenderer {
 class Mesh {
 public:
-    Mesh() = default;
-    explicit Mesh(std::string name) : name_{std::move(name)} {}
+    friend class ObjLoader;
 
-    constexpr std::string& name_ref() { return name_; }
-    constexpr std::vector<Vector3f>& vertices_ref() { return vertices_; }
-    constexpr std::vector<Vector3f>& normal_ref() { return normal_; }
-    constexpr std::vector<Vector2f>& uv_ref() { return uv_; }
+    Mesh() = default;
+    explicit Mesh(std::string& name) : name_{name} {}
 
 private:
     Transform transform_;
-    std::string name_;
-    std::vector<Vector3f> vertices_;
-    std::vector<Vector3f> normal_;
-    std::vector<Vector2f> uv_;
-    std::vector<u32> indices_;
+    std::string name_{"Untitled"};
+    std::vector<std::shared_ptr<Vector3f>> vertices_;
+    std::vector<std::shared_ptr<Vector3f>> normals_;
+    std::vector<std::shared_ptr<Vector2f>> texure_coordinates_;
+    std::vector<u32> vertex_indices_;
+    std::vector<u32> normal_indices_;
+    std::vector<u32> texture_indices_;
 };
 }  // namespace SoftRenderer

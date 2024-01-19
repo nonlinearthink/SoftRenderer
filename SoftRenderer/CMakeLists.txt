@@ -1,15 +1,33 @@
-file(GLOB_RECURSE SOFTRENDERER_HEADER_FILES "include/*.h" "include/*.hpp")
-file(GLOB_RECURSE SOFTRENDERER_SOURCE_FILES "src/*.cpp")
-
-set(SOFTRENDERER_HEADERS ${SOFTRENDERER_HEADER_FILES})
-set(SOFTRENDERER_SOURCES ${SOFTRENDERER_SOURCE_FILES})
+set(
+    SOFTRENDERER_HEADER_SOURCE_FILES
+    include/SoftRenderer/camera.h
+    src/camera.cpp
+    include/SoftRenderer/obj_loader.h
+    src/obj_loader.cpp
+    include/SoftRenderer/quaternion.h
+    src/quaternion.cpp
+    include/SoftRenderer/renderer.h
+    src/renderer.cpp
+    include/SoftRenderer/scene.h
+    src/scene.cpp
+    include/SoftRenderer/transform.h
+    src/transform.cpp
+)
+set(
+    SOFTRENDERER_NO_SOURCE_HEADER_FILES
+    include/SoftRenderer/color.h
+    include/SoftRenderer/common.h
+    include/SoftRenderer/matrix.h
+    include/SoftRenderer/mesh.h
+    include/SoftRenderer/vec.h
+    include/SoftRenderer.h
+)
 
 if(PRINT_CMAKE_DEBUG_MESSAGE)
-    message("SoftRenderer Header Files: ${SOFTRENDERER_HEADERS}")
-    message("SoftRenderer Source Files: ${SOFTRENDERER_SOURCES}")
+    message("SoftRenderer Header&Source Files: ${SOFTRENDERER_HEADER_SOURCE_FILES} ${SOFTRENDERER_NO_SOURCE_HEADER_FILES}")
 endif()
 
-add_library(SoftRenderer SHARED ${SOFTRENDERER_HEADERS} ${SOFTRENDERER_SOURCES})
+add_library(SoftRenderer SHARED ${SOFTRENDERER_HEADER_SOURCE_FILES} ${SOFTRENDERER_NO_SOURCE_HEADER_FILES})
 target_include_directories(SoftRenderer PUBLIC include)
 set_target_properties(SoftRenderer PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(SoftRenderer PUBLIC cxx_std_17)

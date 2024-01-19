@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -17,17 +18,18 @@ static constexpr float C_PI() noexcept {
 #endif
 }
 
-constexpr double DegreeToRadian(double degree) {
-    return degree * (C_PI() / 180);
-}
+constexpr float DegreeToRadian(float degree) { return degree * (C_PI() / 180); }
 
-constexpr double RadianToDegree(double radian) {
-    return radian * (180 / C_PI());
-}
+constexpr float RadianToDegree(float radian) { return radian * (180 / C_PI()); }
 
-inline bool Equals(float lhs, float rhs) {
-    float epsilon = std::numeric_limits<float>::epsilon();
-    return std::abs(lhs - rhs) <= epsilon;
+template <typename T>
+inline bool Equals(T lhs, T rhs) {
+    static_assert(std::is_floating_point<T>::value,
+                  "T must be a floating point type");
+    T epsilon = std::numeric_limits<T>::epsilon();
+    return std::abs(lhs - rhs) <=
+           epsilon *
+               std::max({std::abs(lhs), std::abs(rhs), static_cast<T>(1.0)});
 }
 
 template <typename T>

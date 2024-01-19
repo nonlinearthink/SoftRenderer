@@ -3,9 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include "SoftRenderer/color.h"
-#include "SoftRenderer/vec.h"
-
 using namespace SoftRenderer;
 
 void Renderer::PrepareRender(uint32_t *frame_buffer) {
@@ -33,13 +30,15 @@ void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
 
     int steps = std::max(std::abs(dx), std::abs(dy));
 
-    float x_increase = (float)dx / (float)steps;
-    float y_increase = (float)dy / (float)steps;
+    float x_increase = static_cast<float>(dx) / static_cast<float>(steps);
+    float y_increase = static_cast<float>(dy) / static_cast<float>(steps);
 
-    auto x_paint = (float)p0.x;
-    auto y_paint = (float)p0.y;
+    auto x_paint = static_cast<float>(p0.x);
+    auto y_paint = static_cast<float>(p0.y);
     for (int i = 0; i <= steps; i++) {
-        PutPixel(Vector2i((int)round(x_paint), (int)round(y_paint)), color);
+        PutPixel(Vector2i(static_cast<int>(round(x_paint)),
+                          static_cast<int>(round(y_paint))),
+                 color);
         x_paint += x_increase;
         y_paint += y_increase;
     }
@@ -72,9 +71,10 @@ void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                 continue;
             }
 
-            Vector3f barycentric(1.f - (float)(u.x + u.y) / (float)u.z,
-                                 (float)u.x / (float)u.z,
-                                 (float)u.y / (float)u.z);
+            Vector3f barycentric(
+                1.f - static_cast<float>(u.x + u.y) / static_cast<float>(u.z),
+                static_cast<float>(u.x) / static_cast<float>(u.z),
+                static_cast<float>(u.y) / static_cast<float>(u.z));
             if (barycentric.x > 0 && barycentric.x < 1 && barycentric.y > 0 &&
                 barycentric.y < 1 && barycentric.z > 0 && barycentric.z < 1) {
                 PutPixel(Vector2i(x, y), color);

@@ -8,9 +8,11 @@
 #include "SoftRenderer.h"
 
 int main() {
-    SoftRenderer::ObjLoader loader("assets/cube.obj");
+    SoftRenderer::ObjLoader loader{"assets/cube.obj"};
 
-    loader.LoadModel();
+    std::vector<std::shared_ptr<SoftRenderer::Mesh>> world;
+
+    loader.LoadModel(world);
 
     return 0;
 }

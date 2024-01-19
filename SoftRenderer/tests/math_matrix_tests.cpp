@@ -5,7 +5,7 @@
 
 using namespace SoftRenderer;
 
-TEST_CASE("Matrix Tests", "[Matrix]") {
+TEST_CASE("Matrix Tests", "[Matrix]") {  // NOLINT
     Matrix2 mat2{1, 2, 3, 4};
     Matrix3 mat3{1, 2, 3, 4, 5, 6, 7, 8, 9};
     Matrix4 mat4i{Matrix4::Identity()},
@@ -55,7 +55,7 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Scalar multiplication") {
-        Matrix4 result = mat4i * 2.0f;
+        Matrix4 result = mat4i * 2.f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {
@@ -68,7 +68,7 @@ TEST_CASE("Matrix Tests", "[Matrix]") {
     }
 
     SECTION("Scalar division") {
-        Matrix4 result = mat4i / 2.0f;
+        Matrix4 result = mat4i / 2.f;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == j) {

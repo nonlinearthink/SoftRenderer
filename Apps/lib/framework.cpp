@@ -55,8 +55,8 @@ void RenderApplication::Run() {
         Render();
 
         // Update renderer's surface to window's surface
-        SDL_BlitSurface(render_surface.get(), NULL, _window_surface.get(),
-                        NULL);
+        SDL_BlitSurface(render_surface.get(), nullptr, _window_surface.get(),
+                        nullptr);
         SDL_UpdateWindowSurface(_window.get());
 
         // Keep a fixed frame rate
