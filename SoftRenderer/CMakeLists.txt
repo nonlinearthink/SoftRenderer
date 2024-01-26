@@ -1,15 +1,11 @@
 set(
     SOFTRENDERER_HEADER_SOURCE_FILES
-    include/SoftRenderer/camera.h
-    src/camera.cpp
     include/SoftRenderer/obj_loader.h
     src/obj_loader.cpp
     include/SoftRenderer/quaternion.h
     src/quaternion.cpp
     include/SoftRenderer/renderer.h
     src/renderer.cpp
-    include/SoftRenderer/scene.h
-    src/scene.cpp
     include/SoftRenderer/transform.h
     src/transform.cpp
 )

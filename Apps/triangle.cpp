@@ -11,17 +11,17 @@
 
 #include "lib/framework.h"
 
-class DrawTriangle : public RenderApplication {
+class DrawTriangle : public SoftRendererApplication {
 public:
-    DrawTriangle(int width, int height) : RenderApplication(width, height) {}
+    DrawTriangle(int width, int height) : SoftRendererApplication(width, height) {}
 
     void Render() override {
-        _renderer->DrawFilledTriangle(
-            SoftRenderer::Vector2i(width / 2, static_cast<int>(0.1 * height)),
-            SoftRenderer::Vector2i(static_cast<int>(0.1 * width),
-                                   static_cast<int>(0.9 * height)),
-            SoftRenderer::Vector2i(static_cast<int>(0.9 * width),
-                                   static_cast<int>(0.9 * height)),
+        renderer_.DrawFilledTriangle(
+            SoftRenderer::Vector2i(width_ / 2, static_cast<int>(0.1 * height_)),
+            SoftRenderer::Vector2i(static_cast<int>(0.1 * width_),
+                                   static_cast<int>(0.9 * height_)),
+            SoftRenderer::Vector2i(static_cast<int>(0.9 * width_),
+                                   static_cast<int>(0.9 * height_)),
             SoftRenderer::Color::Green());
     }
 };
@@ -39,6 +39,8 @@ int main(int argc, char* argv[]) {
     }
 
     app->Run();
+
+    app->Release();
 
     return 0;
 }

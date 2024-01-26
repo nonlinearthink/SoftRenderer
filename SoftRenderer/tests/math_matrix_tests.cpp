@@ -96,15 +96,14 @@ TEST_CASE("Matrix Tests", "[Matrix]") {  // NOLINT
     }
 
     SECTION("Inverse") {
-        auto mat2inverse = mat2.Invert();
-        REQUIRE(mat2inverse.has_value());
+        Matrix2 mat2inverse = mat2.Invert();
         Matrix2 mat2check{-2, 1, 1.5, -0.5};
-        REQUIRE(mat2inverse.value() == mat2check);
+        REQUIRE(mat2inverse == mat2check);
 
-        auto mat3inverse = mat3.Invert();
-        REQUIRE(!mat3inverse.has_value());
+        Matrix3 mat3inverse = mat3.Invert();
+        REQUIRE(mat3inverse == mat3);
 
-        auto mat4inverse = mat4.Invert();
-        REQUIRE(!mat4inverse.has_value());
+        Matrix4 mat4inverse = mat4.Invert();
+        REQUIRE(mat4inverse == mat4);
     }
 }

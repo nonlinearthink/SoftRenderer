@@ -25,7 +25,7 @@ public:
     inline void CopyFrom(const Vector2<T>& v);
 };
 
-#pragma region Vector2_Impl
+#pragma region Vector2 Template Implementation
 
 template <typename T>
 inline T Vector2<T>::operator[](size_t n) const {
@@ -72,7 +72,7 @@ inline void Vector2<T>::CopyFrom(const Vector2<T>& v) {
     y = v.y;
 }
 
-#pragma endregion Vector2_Impl
+#pragma endregion Vector2 Template Implementation
 
 template <typename T>
 class Vector3 {
@@ -95,12 +95,12 @@ public:
     [[nodiscard]] constexpr float LengthSquare() const;
     constexpr T Dot(const Vector3<T>& rhs) const;
     Vector3<T> Cross(const Vector3<T>& rhs) const;
-    Vector3<T> Normalize();
+    Vector3<T> Normalize() const;
 
     inline void CopyFrom(const Vector3<T>& v);
 };
 
-#pragma region Vector3_Impl
+#pragma region Vector3 Template Implementation
 
 template <typename T>
 T Vector3<T>::operator[](size_t n) const {
@@ -165,7 +165,7 @@ Vector3<T> Vector3<T>::Cross(const Vector3<T>& rhs) const {
 }
 
 template <typename T>
-Vector3<T> Vector3<T>::Normalize() {
+Vector3<T> Vector3<T>::Normalize() const {
     float len = Length();
     if (len != 0) {
         return {x / len, y / len, z / len};
@@ -181,7 +181,7 @@ inline void Vector3<T>::CopyFrom(const Vector3<T>& v) {
     z = v.z;
 }
 
-#pragma endregion Vector3_Impl
+#pragma endregion Vector3 Template Implementation
 
 using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;

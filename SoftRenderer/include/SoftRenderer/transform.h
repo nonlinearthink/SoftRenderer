@@ -6,74 +6,32 @@
 namespace SoftRenderer {
 class Transform {
 public:
-    static Matrix4 Translate(const Vector3f& position);
-    static Matrix4 RotateX(float radian);
-    static Matrix4 RotateY(float radian);
-    static Matrix4 RotateZ(float radian);
-    static Matrix4 Rotate(const Vector3f& rotation);
-    static Matrix4 Scale(const Vector3f& scaling);
+    Transform() = default;
+    explicit Transform(Matrix4& matrix)
+        : matrix_{matrix}, inverse_matrix_{matrix.Invert()} {}
 
-    [[nodiscard]] inline Vector3f position() const;
-    inline Transform& set_position(const Vector3f& position);
-    [[nodiscard]] inline Vector3f rotation() const;
-    inline Transform& set_rotation(const Vector3f& rotation);
-    [[nodiscard]] inline Vector3f scaling() const;
-    inline Transform& set_scaling(const Vector3f& scaling);
+    static Transform Translate(const Vector3f& position);
+    static Transform RotateX(float radian);
+    static Transform RotateY(float radian);
+    static Transform RotateZ(float radian);
+    static Transform Rotate(const Vector3f& rotation);
+    static Transform Scale(const Vector3f& scaling);
+    static Transform LookAt(const Vector3f& eye, const Vector3f& gaze,
+                            const Vector3f& up);
+    static Transform Orthographic(float near_z, float far_z);
+    static Transform Perspective(float fov, float near_z, float far_z);
+
     inline Matrix4 matrix();
     inline Matrix4 inverse_matrix();
 
+    Transform operator*(const Transform& rhs) const;
+
 private:
-    Vector3f position_{0, 0, 0};
-    Vector3f rotation_{0, 0, 0};
-    Vector3f scaling_{1, 1, 1};
-    bool is_dirty_{false};
     Matrix4 matrix_{Matrix4::Identity()};
     Matrix4 inverse_matrix_{Matrix4::Identity()};
-
-    void UpdateTransformMatrix();
 };
 
-inline Vector3f Transform::position() const { return position_; };
+inline Matrix4 Transform::matrix() { return matrix_; }
 
-inline Transform& Transform::set_position(const Vector3f& position) {
-    if (position_ != position) {
-        position_.CopyFrom(position);
-        is_dirty_ = true;
-    }
-    return *this;
-}
-
-inline Vector3f Transform::rotation() const { return rotation_; };
-
-inline Transform& Transform::set_rotation(const Vector3f& rotation) {
-    if (rotation_ != rotation) {
-        rotation_.CopyFrom(rotation);
-        is_dirty_ = true;
-    }
-    return *this;
-}
-
-inline Vector3f Transform::scaling() const { return scaling_; };
-
-inline Transform& Transform::set_scaling(const Vector3f& scaling) {
-    if (scaling_ != scaling) {
-        scaling_.CopyFrom(scaling);
-        is_dirty_ = true;
-    }
-    return *this;
-}
-
-inline Matrix4 Transform::matrix() {
-    if (is_dirty_) {
-        UpdateTransformMatrix();
-    }
-    return matrix_;
-}
-
-inline Matrix4 Transform::inverse_matrix() {
-    if (is_dirty_) {
-        UpdateTransformMatrix();
-    }
-    return inverse_matrix_;
-}
+inline Matrix4 Transform::inverse_matrix() { return inverse_matrix_; }
 }  // namespace SoftRenderer

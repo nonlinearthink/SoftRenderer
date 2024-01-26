@@ -48,8 +48,10 @@ public:
     [[nodiscard]] Matrix<N> Adjoint() const;
     // Compute the inverse matrix, return std::nullopt if there's no inverse
     // matrix, otherwise return a matrix wrapped by a optional
-    [[nodiscard]] std::optional<Matrix<N>> Invert() const;
+    [[nodiscard]] Matrix<N> Invert() const;
 };
+
+#pragma region Matrix Template Implementation
 
 template <size_t N>
 Matrix<N>::Matrix(const std::initializer_list<float>& list) {
@@ -214,22 +216,22 @@ Matrix<N> Matrix<N>::Adjoint() const {
 }
 
 template <size_t N>
-std::optional<Matrix<N>> Matrix<N>::Invert() const {
+Matrix<N> Matrix<N>::Invert() const {
     /// Use adjoint matrix and determinant to compute the inverse matrix.
-    std::optional<Matrix<N>> result;
     float det = Determinant();
     if (det == 0) {
-        return result;
+        return *this;
     }
-    Matrix<N> result_mat;
+    Matrix<N> result;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            result_mat.m[j][i] = Cofactor(i, j) / det;
+            result.m[j][i] = Cofactor(i, j) / det;
         }
     }
-    result.emplace(result_mat);
     return result;
 }
+
+#pragma endregion Matrix Template Implementation
 
 // Vector3f TransformVector(const Vector3f& vec, const Matrix4& mat) {
 //     float x = mat.m[0][0] * vec.x + mat.m[0][1] * vec.y + mat.m[0][2] *

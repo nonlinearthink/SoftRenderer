@@ -29,6 +29,8 @@ public:
     inline void CopyFrom(const Color& color);
 };
 
+#pragma region Color Inline Implementation
+
 inline Color Color::operator+(const Color& rhs) const {
     const auto min = 0.f;
     const auto max = 1.f;
@@ -77,4 +79,6 @@ inline void Color::CopyFrom(const Color& color) {
     b = color.b;
     a = color.a;
 }
+
+#pragma endregion Color Inline Implementation
 }  // namespace SoftRenderer
