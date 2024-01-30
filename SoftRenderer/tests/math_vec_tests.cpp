@@ -5,6 +5,7 @@
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;
+using namespace MathUtils;
 
 TEST_CASE("Vector2 Tests") {  // NOLINT
     Vector2i v1(1, 2);

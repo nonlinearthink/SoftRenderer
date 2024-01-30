@@ -4,12 +4,14 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <string>
 
 typedef int32_t i32;
 typedef int64_t i64;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
+namespace MathUtils {
 static constexpr float C_PI() noexcept {
 #ifdef M_PI
     return M_PI;
@@ -36,3 +38,10 @@ template <typename T>
 inline T Lerp(const T& lhs, const T& rhs, float t) {
     return (lhs * (1 - t)) + (rhs * t);
 }
+}  // namespace MathUtils
+
+namespace StringUtils {
+// Used to implement the ends_with function of std::string in standards prior to
+// CXX20
+bool EndsWith(const std::string& full_str, const std::string& end_str);
+}  // namespace StringUtils

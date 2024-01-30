@@ -3,6 +3,8 @@
 #include "SoftRenderer/common.h"
 #include "catch2/catch_test_macros.hpp"
 
+using namespace MathUtils;
+
 TEST_CASE("Degree To Radian") {  // NOLINT
     REQUIRE(Equals(DegreeToRadian(0), 0.f));
     REQUIRE(Equals(DegreeToRadian(90), C_PI() / 2));

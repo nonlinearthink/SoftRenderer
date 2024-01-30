@@ -128,7 +128,7 @@ template <size_t N>
 bool Matrix<N>::operator==(const Matrix<N>& rhs) const {
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
-            if (!Equals(m[i][j], rhs.m[i][j])) {
+            if (!MathUtils::Equals(m[i][j], rhs.m[i][j])) {
                 return false;
             }
         }

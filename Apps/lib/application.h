@@ -1,4 +1,5 @@
-#include <cassert>
+#pragma once
+
 #include <memory>
 
 #include "SDL.h"
@@ -12,9 +13,12 @@
 class SoftRendererApplication {
 public:
     SoftRendererApplication(int _width, int _height);
+#ifdef _DEBUG
     ~SoftRendererApplication();
+#endif
 
     bool Initialize();
+    bool LoadAssets(const std::string& path);
     void Run();
     void Release();
 
@@ -28,4 +32,6 @@ private:
     SDL_Window* window_{nullptr};
     SDL_Surface* window_surface_{nullptr};
     std::unique_ptr<SDL_Event> event_{nullptr};
+
+    void HandleSDLCrash(const std::string& message);
 };

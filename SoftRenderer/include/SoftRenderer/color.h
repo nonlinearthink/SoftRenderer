@@ -24,7 +24,7 @@ public:
     inline Color operator-(const Color& rhs) const;
     inline Color operator*(float k) const;
     inline Color operator/(float k) const;
-    explicit constexpr operator uint32_t() const;
+    explicit constexpr operator u32() const;
 
     inline void CopyFrom(const Color& color);
 };
@@ -67,10 +67,10 @@ inline Color Color::operator/(const float k) const {
     return {r, g, b};
 }
 
-constexpr Color::operator uint32_t() const {
-    return (static_cast<uint32_t>(r * 255) << 24) |
-           (static_cast<uint32_t>(g * 255) << 16) |
-           (static_cast<uint32_t>(b * 255) << 8) | static_cast<uint32_t>(255);
+constexpr Color::operator u32() const {
+    return (static_cast<u32>(r * 255) << 24) |
+           (static_cast<u32>(g * 255) << 16) |
+           (static_cast<u32>(b * 255) << 8) | static_cast<u32>(255);
 }
 
 inline void Color::CopyFrom(const Color& color) {

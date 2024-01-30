@@ -1,19 +1,21 @@
-#include "framework.h"
+#include "application.h"
+
+#include <cassert>
+#include <string>
 
 SoftRendererApplication::SoftRendererApplication(int width, int height)
     : width_{width}, height_{height}, renderer_{width, height} {}
 
-SoftRendererApplication::~SoftRendererApplication() {
 #ifdef _DEBUG
+SoftRendererApplication::~SoftRendererApplication() {
     assert(window_);
     assert(window_surface_);
-#endif
 }
+#endif
 
 bool SoftRendererApplication::Initialize() {
     if (SDL_Init(SDL_INIT_EVENTS) < 0) {
-        SDL_Log("SDL init failed");
-        SDL_Quit();
+        HandleSDLCrash("SDL init failed");
         return false;
     }
 
@@ -21,8 +23,7 @@ bool SoftRendererApplication::Initialize() {
                                SDL_WINDOWPOS_UNDEFINED, width_, height_,
                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!window_) {
-        SDL_Log("create window failed.");
-        SDL_Quit();
+        HandleSDLCrash("create window failed.");
         return false;
     }
 
@@ -31,6 +32,10 @@ bool SoftRendererApplication::Initialize() {
     event_ = std::make_unique<SDL_Event>();
 
     return true;
+}
+
+bool SoftRendererApplication::LoadAssets(const std::string& path) {
+    return renderer_.scene.LoadAssetsFromFile(path);
 }
 
 void SoftRendererApplication::Run() {
@@ -43,21 +48,20 @@ void SoftRendererApplication::Run() {
             }
         }
 
-        // prepare renderer
+        // Create a render surface to get a frame buffer
         SDL_Surface* render_surface{SDL_CreateRGBSurfaceWithFormat(
             0, width_, height_, 32, SDL_PIXELFORMAT_RGBA8888)};
-        renderer_.PrepareRender((Uint32*)render_surface->pixels);
-
-        // Clear renderer
+        renderer_.BindFrameBuffer((u32*)render_surface->pixels);
         renderer_.Clear();
 
-        // Do a custom render job
+        // Do render job
         Render();
 
-        // Update renderer's surface to window's surface
+        // Copy the render surface to window surface
         SDL_BlitSurface(render_surface, nullptr, window_surface_, nullptr);
         SDL_UpdateWindowSurface(window_);
 
+        // Free the render surface
         SDL_FreeSurface(render_surface);
 
         // Keep a fixed frame rate
@@ -71,4 +75,9 @@ void SoftRendererApplication::Release() {
         SDL_DestroyWindow(window_);
     }
     SDL_Quit();
+}
+
+void SoftRendererApplication::HandleSDLCrash(const std::string& message) {
+    SDL_Log(message.c_str());
+    Release();
 }

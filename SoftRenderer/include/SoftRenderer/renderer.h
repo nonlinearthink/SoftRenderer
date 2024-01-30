@@ -4,38 +4,44 @@
 
 #include "SoftRenderer/color.h"
 #include "SoftRenderer/matrix.h"
+#include "SoftRenderer/scene.h"
 #include "SoftRenderer/vec.h"
 
 namespace SoftRenderer {
 class Renderer {
 public:
+    Scene scene;
+
     Renderer(int width, int height)
         : width_(width), height_(height), background_(Color::Black()){};
 
     [[nodiscard]] inline Color background() const;
     inline void set_background(const Color &background);
 
-    void PrepareRender(uint32_t *frame_buffer);
+    void BindFrameBuffer(u32 *frame_buffer);
+    // Transform a vector from the [-1,1]^3 cube coordinate space to
+    // [0,width]×[0,height] screen space.
+    [[nodiscard]] Vector2f ViewportTransform(const Vector3f &vec) const;
     // Clear frameBuffer.
     void Clear();
-    // Put pixel color
+    // Put pixel color.
     void PutPixel(const Vector2i &p, const Color &color);
     // Draw a line(digital differential analyzer).
     void DrawLine(const Vector2i &p0, const Vector2i &p1, const Color &color);
-    // Draw a wireframe triangle
+    // Draw a wireframe triangle.
     void DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
                                const Vector2i &p2, const Color &color);
-    // Draw a filled triangle
+    // Draw a filled triangle.
     void DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
                             const Vector2i &p2, const Color &color);
-    // Draw a 3d triangle
-    void Draw3DTriangle(const Vector3f &p0, const Vector3f &p1,
-                        const Vector3f &p2, const Matrix4 &mvp);
+    // Draw a triangle primitive.
+    void DrawTrianglePrimitive(const Vector3f &p0, const Vector3f &p1,
+                               const Vector3f &p2, const Matrix4 &mvp);
 
 private:
     int width_, height_;
     Color background_;
-    uint32_t *frame_buffer_{nullptr};
+    u32 *frame_buffer_{nullptr};
 };
 
 inline Color Renderer::background() const { return background_; }

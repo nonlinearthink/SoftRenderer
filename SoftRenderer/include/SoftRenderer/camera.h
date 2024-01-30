@@ -31,9 +31,9 @@ private:
     float fov_{DEFAULT_FOV};
     float aspect_{DEFAULT_ASPECT};
     Transform view_matrix_;
-    bool is_view_matrix_ready_{false};
+    bool is_view_matrix_dirty_{false};
     Transform projection_matrix_;
-    bool is_projection_matrix_ready_{false};
+    bool is_projection_matrix_dirty_{false};
 
     void ComputeViewMatrix();
     void ComputeProjectionMatrix();
@@ -42,18 +42,29 @@ private:
 #pragma region Camera Inline Implementation
 
 inline void Camera::set_position(const Vector3f& position) {
+    is_view_matrix_dirty_ = true;
     position_.CopyFrom(position);
 }
 
 inline void Camera::set_target(const Vector3f& target) {
+    is_view_matrix_dirty_ = true;
     target_.CopyFrom(target);
 }
 
-inline void Camera::set_up(const Vector3f& up) { up_.CopyFrom(up); }
+inline void Camera::set_up(const Vector3f& up) {
+    is_view_matrix_dirty_ = true;
+    up_.CopyFrom(up);
+}
 
-inline void Camera::set_fov(float fov) { fov_ = fov; }
+inline void Camera::set_fov(float fov) {
+    is_projection_matrix_dirty_ = true;
+    fov_ = fov;
+}
 
-inline void Camera::set_aspect(float aspect) { aspect_ = aspect; }
+inline void Camera::set_aspect(float aspect) {
+    is_projection_matrix_dirty_ = true;
+    aspect_ = aspect;
+}
 
 #pragma endregion Camera Inline Implementation
 

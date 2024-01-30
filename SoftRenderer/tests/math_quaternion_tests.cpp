@@ -5,6 +5,7 @@
 #include "catch2/catch_test_macros.hpp"
 
 using namespace SoftRenderer;
+using namespace MathUtils;
 
 TEST_CASE("Quaternion base case", "[Quaternion]") {  // NOLINT
     Quaternion q1(1, 2, 3, 4);
