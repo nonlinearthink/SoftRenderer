@@ -51,36 +51,81 @@ Transform Transform::Scale(const Vector3f &scaling) {
 
 Transform Transform::LookAt(const Vector3f &eye, const Vector3f &gaze,
                             const Vector3f &up) {
-    Vector3f u = up.Cross(gaze).Normalize();
-    Vector3f v = u.Cross(gaze).Normalize();
-    Vector3f w = u.Cross(v).Normalize();
-    Matrix4 matrix{u.x, v.x, w.x, -eye.x, u.y, v.y, w.y, -eye.y,
-                   u.z, v.z, w.z, -eye.z, 0,   0,   0,   1};
+    Vector3f w = gaze.Normalize() * -1;
+    Vector3f u = up.Cross(w).Normalize();
+    Vector3f v = w.Cross(u).Normalize();
+    Matrix4 translate{1, 0, 0, -eye.x, 0, 1, 0, -eye.y,
+                      0, 0, 1, -eye.z, 0, 0, 0, 1};
+    Matrix4 rotation{u.x, u.y, u.z, 0, v.x, v.y, v.z, 0,
+                     w.x, w.y, w.z, 0, 0,   0,   0,   1};
+    Matrix4 matrix{rotation * translate};
     return Transform{matrix};
 }
 
-Transform Transform::Orthographic(float near_z, float far_z) {
-    return Scale(Vector3f{1, 1, far_z - near_z}) *
-           Translate(Vector3f{0, 0, -near_z});
+Transform Transform::Orthographic(float left, float right, float bottom,
+                                  float top, float far, float near) {
+    Matrix4 matrix{2 / (right - left),
+                   0,
+                   0,
+                   -(right + left) / (right - left),
+                   0,
+                   2 / (top - bottom),
+                   0,
+                   -(top + bottom) / (top - bottom),
+                   0,
+                   0,
+                   2 / (near - far),
+                   -(near + far) / (near - far),
+                   0,
+                   0,
+                   0,
+                   1};
+    return Transform{matrix};
 }
 
-Transform Transform::Perspective(float fov, float near_z, float far_z) {
-    Matrix4 matrix{1,
+Transform Transform::Perspective(float left, float right, float bottom,
+                                 float top, float far, float near) {
+    // M_per = M_orth * P, P is a transform matrix from perspective frustum to
+    // orthographic cuboid.
+    Matrix4 matrix{2 * near / (right - left),
+                   0,
+                   0,
+                   (right + left) / (right - left),
+                   0,
+                   2 * near / (top - bottom),
+                   0,
+                   (top + bottom) / (top - bottom),
                    0,
                    0,
                    0,
-                   0,
-                   1,
-                   0,
-                   0,
-                   0,
-                   0,
-                   far_z / (far_z - near_z),
-                   -far_z * near_z / (far_z - near_z),
+                   (near + far) / (near - far),
+                   2 * far * near / (far - near),
                    0,
                    0,
                    1,
                    0};
+    return Transform{matrix};
+}
+
+Transform Transform::Viewport(int width, int height) {
+    float half_width = static_cast<float>(width) / 2.f;
+    float half_height = static_cast<float>(height) / 2.f;
+    Matrix4 matrix{half_width,
+                   0,
+                   half_width - 0.5f,
+                   0,
+                   0,
+                   half_height,
+                   half_height - 0.5f,
+                   0,
+                   0,
+                   0,
+                   1,
+                   0,
+                   0,
+                   0,
+                   0,
+                   1};
     return Transform{matrix};
 }
 

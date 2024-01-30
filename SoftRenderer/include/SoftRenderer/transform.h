@@ -16,10 +16,18 @@ public:
     static Transform RotateZ(float radian);
     static Transform Rotate(const Vector3f& rotation);
     static Transform Scale(const Vector3f& scaling);
+    // camera view transform
     static Transform LookAt(const Vector3f& eye, const Vector3f& gaze,
                             const Vector3f& up);
-    static Transform Orthographic(float near_z, float far_z);
-    static Transform Perspective(float fov, float near_z, float far_z);
+    // orthographic projection: (l,b,n)->(-1,-1,1), (r,t,f)->(1,1,-1)
+    static Transform Orthographic(float left, float right, float bottom,
+                                  float top, float far, float near);
+    // perspective projection
+    static Transform Perspective(float left, float right, float bottom,
+                                 float top, float far, float near);
+    // Transform a vector from the [-1,1]^3 cube coordinate space to
+    // [0,width]×[0,height] screen space.
+    static Transform Viewport(int width, int height);
 
     inline Matrix4 matrix();
     inline Matrix4 inverse_matrix();

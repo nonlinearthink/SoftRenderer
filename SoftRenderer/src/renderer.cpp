@@ -9,14 +9,6 @@ void Renderer::BindFrameBuffer(u32 *frame_buffer) {
     frame_buffer_ = frame_buffer;
 }
 
-Vector2f Renderer::ViewportTransform(const Vector3f &vec) const {
-    float half_width = static_cast<float>(width_) / 2.f;
-    float half_height = static_cast<float>(height_) / 2.f;
-    float viewport_x = half_width * vec.x + half_width + 1.f / 2;
-    float viewport_y = half_height * vec.y + half_height + 1.f / 2;
-    return {viewport_x, viewport_y};
-}
-
 void Renderer::Clear() {
     auto color_data = static_cast<u32>(background_);
     for (int i = 0; i < width_; i++) {

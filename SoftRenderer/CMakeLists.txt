@@ -1,9 +1,12 @@
 set(
-    SOFTRENDERER_HEADER_SOURCE_FILES
+    SOFTRENDERER_FILES
     include/SoftRenderer/camera.h
     src/camera.cpp
+    include/SoftRenderer/color.h
     include/SoftRenderer/common.h
     src/common.cpp
+    include/SoftRenderer/matrix.h
+    include/SoftRenderer/mesh.h
     include/SoftRenderer/obj_loader.h
     src/obj_loader.cpp
     include/SoftRenderer/quaternion.h
@@ -14,21 +17,15 @@ set(
     src/scene.cpp
     include/SoftRenderer/transform.h
     src/transform.cpp
-)
-set(
-    SOFTRENDERER_NO_SOURCE_HEADER_FILES
-    include/SoftRenderer/color.h
-    include/SoftRenderer/matrix.h
-    include/SoftRenderer/mesh.h
     include/SoftRenderer/vec.h
     include/SoftRenderer.h
 )
 
 if(PRINT_CMAKE_DEBUG_MESSAGE)
-    message("SoftRenderer Header&Source Files: ${SOFTRENDERER_HEADER_SOURCE_FILES} ${SOFTRENDERER_NO_SOURCE_HEADER_FILES}")
+    message("SoftRenderer Header&Source Files: ${SOFTRENDERER_FILES}")
 endif()
 
-add_library(SoftRenderer SHARED ${SOFTRENDERER_HEADER_SOURCE_FILES} ${SOFTRENDERER_NO_SOURCE_HEADER_FILES})
+add_library(SoftRenderer SHARED ${SOFTRENDERER_FILES})
 target_include_directories(SoftRenderer PUBLIC include)
 set_target_properties(SoftRenderer PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(SoftRenderer PUBLIC cxx_std_17)

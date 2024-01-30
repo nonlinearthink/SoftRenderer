@@ -6,7 +6,6 @@
 
 #include "SoftRenderer/transform.h"
 #include "SoftRenderer/vec.h"
-#include "SoftRenderer/vertex.h"
 
 namespace SoftRenderer {
 class Mesh {

@@ -11,4 +11,3 @@
 #include "SoftRenderer/scene.h"
 #include "SoftRenderer/transform.h"
 #include "SoftRenderer/vec.h"
-#include "SoftRenderer/vertex.h"

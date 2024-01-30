@@ -19,9 +19,6 @@ public:
     inline void set_background(const Color &background);
 
     void BindFrameBuffer(u32 *frame_buffer);
-    // Transform a vector from the [-1,1]^3 cube coordinate space to
-    // [0,width]×[0,height] screen space.
-    [[nodiscard]] Vector2f ViewportTransform(const Vector3f &vec) const;
     // Clear frameBuffer.
     void Clear();
     // Put pixel color.
