@@ -1,14 +1,8 @@
 #pragma once
 
-#include <algorithm>
 #include <cassert>
-#include <cmath>
-#include <cstddef>
-#include <optional>
 
 #include "SoftRenderer/common.h"
-#include "SoftRenderer/matrix.h"
-#include "SoftRenderer/vec.h"
 
 namespace SoftRenderer {
 // Matrix Template Class
@@ -232,13 +226,6 @@ Matrix<N> Matrix<N>::Invert() const {
 }
 
 #pragma endregion Matrix Template Implementation
-
-// Vector3f TransformVector(const Vector3f& vec, const Matrix4& mat) {
-//     float x = mat.m[0][0] * vec.x + mat.m[0][1] * vec.y + mat.m[0][2] *
-//     vec.z; float y = mat.m[1][0] * vec.x + mat.m[1][1] * vec.y + mat.m[1][2]
-//     * vec.z; float z = mat.m[2][0] * vec.x + mat.m[2][1] * vec.y +
-//     mat.m[2][2] * vec.z; Vector3f result(x, y, z); return result;
-// }
 
 using Matrix2 = Matrix<2>;
 using Matrix3 = Matrix<3>;

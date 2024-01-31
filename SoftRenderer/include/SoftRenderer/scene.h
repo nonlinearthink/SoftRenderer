@@ -1,11 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "SoftRenderer/camera.h"
-#include "SoftRenderer/common.h"
 #include "SoftRenderer/mesh.h"
 
 namespace SoftRenderer {

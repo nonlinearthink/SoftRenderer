@@ -6,7 +6,6 @@
 #include "SoftRenderer/matrix.h"
 #include "SoftRenderer/mesh.h"
 #include "SoftRenderer/obj_loader.h"
-#include "SoftRenderer/quaternion.h"
 #include "SoftRenderer/renderer.h"
 #include "SoftRenderer/scene.h"
 #include "SoftRenderer/transform.h"

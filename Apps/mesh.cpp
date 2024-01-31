@@ -8,7 +8,7 @@ public:
     MeshDemo(int width, int height) : SoftRendererApplication(width, height) {}
 
     void Render() override {
-        renderer_.DrawFilledTriangle(
+        renderer_.DrawTriangle2D(
             SoftRenderer::Vector2i(width_ / 2, static_cast<int>(0.1 * height_)),
             SoftRenderer::Vector2i(static_cast<int>(0.1 * width_),
                                    static_cast<int>(0.9 * height_)),

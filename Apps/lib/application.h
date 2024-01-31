@@ -6,7 +6,7 @@
 #include "SoftRenderer.h"
 
 /**
- * @brief Base Class for All Application
+ * @brief Base Class for SoftRenderer Demo
  *
  * Used to wrap the interface of the SDL library
  */

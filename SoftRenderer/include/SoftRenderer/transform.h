@@ -34,6 +34,8 @@ public:
 
     Transform operator*(const Transform& rhs) const;
 
+    [[nodiscard]] Vector3f TransformVector(const Vector3f& vec) const;
+
 private:
     Matrix4 matrix_{Matrix4::Identity()};
     Matrix4 inverse_matrix_{Matrix4::Identity()};

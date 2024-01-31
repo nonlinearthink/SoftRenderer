@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -41,7 +40,7 @@ inline T Lerp(const T& lhs, const T& rhs, float t) {
 }  // namespace MathUtils
 
 namespace StringUtils {
-// Used to implement the ends_with function of std::string in standards prior to
+// Used to implement the ends_with function of std::string in standards before
 // CXX20
 bool EndsWith(const std::string& full_str, const std::string& end_str);
 }  // namespace StringUtils

@@ -51,7 +51,7 @@ void SoftRendererApplication::Run() {
         // Create a render surface to get a frame buffer
         SDL_Surface* render_surface{SDL_CreateRGBSurfaceWithFormat(
             0, width_, height_, 32, SDL_PIXELFORMAT_RGBA8888)};
-        renderer_.BindFrameBuffer((u32*)render_surface->pixels);
+        renderer_.BeginDraw((u32*)render_surface->pixels);
         renderer_.Clear();
 
         // Do render job

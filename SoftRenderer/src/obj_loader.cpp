@@ -1,6 +1,9 @@
 #include "SoftRenderer/obj_loader.h"
 
+#include <fstream>
+#include <iostream>
 #include <memory>
+#include <sstream>
 
 #include "SoftRenderer/vec.h"
 

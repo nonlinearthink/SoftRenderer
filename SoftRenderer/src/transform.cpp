@@ -133,3 +133,18 @@ Transform Transform::operator*(const Transform &rhs) const {
     Matrix4 matrix{matrix_ * rhs.matrix_};
     return Transform{matrix};
 }
+
+Vector3f Transform::TransformVector(const Vector3f &vec) const {
+    float x = matrix_.m[0][0] * vec.x + matrix_.m[0][1] * vec.y +
+              matrix_.m[0][2] * vec.z + matrix_.m[0][3];
+    float y = matrix_.m[1][0] * vec.x + matrix_.m[1][1] * vec.y +
+              matrix_.m[1][2] * vec.z + matrix_.m[1][3];
+    float z = matrix_.m[2][0] * vec.x + matrix_.m[2][1] * vec.y +
+              matrix_.m[2][2] * vec.z + matrix_.m[2][3];
+    float w = matrix_.m[3][0] * vec.x + matrix_.m[3][1] * vec.y +
+              matrix_.m[3][2] * vec.z + matrix_.m[3][3];
+#ifdef _DEBUG
+    assert(w != 0);
+#endif
+    return {x / w, y / w, z / w};
+}

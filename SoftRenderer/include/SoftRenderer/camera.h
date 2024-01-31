@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SoftRenderer/matrix.h"
 #include "SoftRenderer/transform.h"
 #include "SoftRenderer/vec.h"
 

@@ -1,13 +1,6 @@
 #include "SoftRenderer/renderer.h"
 
-#include <algorithm>
-#include <cmath>
-
 using namespace SoftRenderer;
-
-void Renderer::BindFrameBuffer(u32 *frame_buffer) {
-    frame_buffer_ = frame_buffer;
-}
 
 void Renderer::Clear() {
     auto color_data = static_cast<u32>(background_);
@@ -22,8 +15,8 @@ void Renderer::PutPixel(const Vector2i &p, const Color &color) {
     frame_buffer_[p.y * width_ + p.x] = static_cast<u32>(color);
 }
 
-void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
-                        const Color &color) {
+void Renderer::DrawLine2D(const Vector2i &p0, const Vector2i &p1,
+                          const Color &color) {
     // Digital Differential Analyzer
     int dx = p1.x - p0.x;
     int dy = p1.y - p0.y;
@@ -44,15 +37,15 @@ void Renderer::DrawLine(const Vector2i &p0, const Vector2i &p1,
     }
 }
 
-void Renderer::DrawWireframeTriangle(const Vector2i &p0, const Vector2i &p1,
-                                     const Vector2i &p2, const Color &color) {
-    DrawLine(p0, p1, color);
-    DrawLine(p1, p2, color);
-    DrawLine(p2, p0, color);
+void Renderer::DrawWireframeTriangle2D(const Vector2i &p0, const Vector2i &p1,
+                                       const Vector2i &p2, const Color &color) {
+    DrawLine2D(p0, p1, color);
+    DrawLine2D(p1, p2, color);
+    DrawLine2D(p2, p0, color);
 }
 
-void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
-                                  const Vector2i &p2, const Color &color) {
+void Renderer::DrawTriangle2D(const Vector2i &p0, const Vector2i &p1,
+                              const Vector2i &p2, const Color &color) {
     // Bounding Rect
     Vector2i min{std::max(0, std::min(p0.x, std::min(p1.x, p2.x))),
                  std::max(0, std::min(p0.y, std::min(p1.y, p2.y)))};
@@ -82,3 +75,5 @@ void Renderer::DrawFilledTriangle(const Vector2i &p0, const Vector2i &p1,
         }
     }
 }
+
+void Renderer::BeginDraw(u32 *frame_buffer) { frame_buffer_ = frame_buffer; }
