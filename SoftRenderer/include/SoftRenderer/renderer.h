@@ -1,19 +1,54 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "SoftRenderer/color.h"
 #include "SoftRenderer/scene.h"
+#include "SoftRenderer/shader_program.h"
 #include "SoftRenderer/vec.h"
+#include "SoftRenderer/vertex.h"
 
 namespace SoftRenderer {
+enum class RenderMode { WIREFRAME, SOLID, SHADED };
+
+struct RenderState {
+    Color background;
+    RenderMode render_mode;
+
+    RenderState()
+        : background(Color::Black()), render_mode(RenderMode::SHADED) {}
+};
+
 class Renderer {
 public:
     Scene scene;
 
-    Renderer(int width, int height)
-        : width_(width), height_(height), background_(Color::Black()){};
+    Renderer(int width, int height) : width_(width), height_(height){};
+    Renderer(int width, int height, RenderState render_state)
+        : width_(width), height_(height), render_state_(render_state) {}
 
-    [[nodiscard]] inline Color background() const;
-    inline void set_background(const Color &background);
+    [[nodiscard]] inline int get_width() const { return width_; };
+    [[nodiscard]] inline int get_height() const { return height_; };
+    inline void set_frame_buffer(u32 *frame_buffer) {
+        frame_buffer_ = frame_buffer;
+    }
+    inline void set_vertex_buffer(std::vector<Vertex> vertex_buffer) {
+        vertex_buffer_ = std::move(vertex_buffer);
+    }
+    inline void set_shader_program(
+        std::unique_ptr<IShaderProgram> shader_program) {
+        shader_program_ = std::move(shader_program);
+    }
+
+    virtual void Render();
+
+private:
+    int width_, height_;
+    RenderState render_state_;
+    u32 *frame_buffer_{nullptr};
+    std::vector<Vertex> vertex_buffer_;
+    std::unique_ptr<IShaderProgram> shader_program_{nullptr};
 
     // Clear frameBuffer.
     void Clear();
@@ -35,17 +70,7 @@ public:
     void DrawTriangle(const Vector3f &p0, const Vector3f &p1,
                       const Vector3f &p2, const Matrix4 &matrix,
                       const Color &color);
-    void BeginDraw(u32 *frame_buffer);
-
-private:
-    int width_, height_;
-    Color background_;
-    u32 *frame_buffer_{nullptr};
-};
-
-inline Color Renderer::background() const { return background_; }
-
-inline void Renderer::set_background(const Color &background) {
-    background_.CopyFrom(background);
+    // Draw a primitive
+    void DrawPrimitive();
 };
 };  // namespace SoftRenderer

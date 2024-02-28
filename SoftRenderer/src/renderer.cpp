@@ -2,8 +2,13 @@
 
 using namespace SoftRenderer;
 
+void Renderer::Render() {
+    Clear();
+    DrawPrimitive(); 
+}
+
 void Renderer::Clear() {
-    auto color_data = static_cast<u32>(background_);
+    auto color_data = static_cast<u32>(render_state_.background);
     for (int i = 0; i < width_; i++) {
         for (int j = 0; j < height_; j++) {
             frame_buffer_[j * width_ + i] = color_data;
@@ -76,4 +81,4 @@ void Renderer::DrawTriangle2D(const Vector2i &p0, const Vector2i &p1,
     }
 }
 
-void Renderer::BeginDraw(u32 *frame_buffer) { frame_buffer_ = frame_buffer; }
+void Renderer::DrawPrimitive() {}

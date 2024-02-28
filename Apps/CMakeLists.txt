@@ -17,6 +17,6 @@ add_custom_target(CopyAssets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/CopyAssets.cmake
 )
 
-AddApp(TriangleDemo triangle.cpp lib/application.h lib/application.cpp)
-AddApp(MeshDemo mesh.cpp lib/application.h lib/application.cpp)
-add_dependencies(MeshDemo CopyAssets)
+AddApp(ShadedTriangle src/triangle.cpp src/SDLApplication.h src/SDLApplication.cpp)
+AddApp(OBJMesh src/mesh.cpp src/SDLApplication.h src/SDLApplication.cpp)
+add_dependencies(OBJMesh CopyAssets)

@@ -1,29 +1,16 @@
-#include "application.h"
+#include "SDLApplication.h"
 
-#include <cassert>
-#include <string>
-
-SoftRendererApplication::SoftRendererApplication(int width, int height)
-    : width_{width}, height_{height}, renderer_{width, height} {}
-
-#ifdef _DEBUG
-SoftRendererApplication::~SoftRendererApplication() {
-    assert(window_);
-    assert(window_surface_);
-}
-#endif
-
-bool SoftRendererApplication::Initialize() {
+bool SDLApplication::Initialize() {
     if (SDL_Init(SDL_INIT_EVENTS) < 0) {
-        HandleSDLCrash("SDL init failed");
+        HandleSDLError("SDL init failed");
         return false;
     }
 
-    window_ = SDL_CreateWindow("SoftRenderer", SDL_WINDOWPOS_UNDEFINED,
+    window_ = SDL_CreateWindow(title_.c_str(), SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED, width_, height_,
                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!window_) {
-        HandleSDLCrash("create window failed.");
+        HandleSDLError("create window failed.");
         return false;
     }
 
@@ -34,11 +21,7 @@ bool SoftRendererApplication::Initialize() {
     return true;
 }
 
-bool SoftRendererApplication::LoadAssets(const std::string& path) {
-    return renderer_.scene.LoadAssetsFromFile(path);
-}
-
-void SoftRendererApplication::Run() {
+void SDLApplication::MainLoop() {
     bool running = true;
     while (running) {
         while (SDL_PollEvent(event_.get())) {
@@ -51,11 +34,11 @@ void SoftRendererApplication::Run() {
         // Create a render surface to get a frame buffer
         SDL_Surface* render_surface{SDL_CreateRGBSurfaceWithFormat(
             0, width_, height_, 32, SDL_PIXELFORMAT_RGBA8888)};
-        renderer_.BeginDraw((u32*)render_surface->pixels);
-        renderer_.Clear();
 
-        // Do render job
-        Render();
+        renderer_->set_frame_buffer(
+            reinterpret_cast<u32*>(render_surface->pixels));
+        renderer_->Render();
+        renderer_->set_frame_buffer(nullptr);
 
         // Copy the render surface to window surface
         SDL_BlitSurface(render_surface, nullptr, window_surface_, nullptr);
@@ -69,7 +52,7 @@ void SoftRendererApplication::Run() {
     }
 }
 
-void SoftRendererApplication::Release() {
+void SDLApplication::Destroy() {
     if (window_) {
         // This will not only destroy window_, but also free window_surface_
         SDL_DestroyWindow(window_);
@@ -77,7 +60,7 @@ void SoftRendererApplication::Release() {
     SDL_Quit();
 }
 
-void SoftRendererApplication::HandleSDLCrash(const std::string& message) {
+void SDLApplication::HandleSDLError(const std::string& message) {
     SDL_Log(message.c_str());
-    Release();
+    Destroy();
 }

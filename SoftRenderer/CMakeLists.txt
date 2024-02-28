@@ -15,7 +15,6 @@ set(
     src/scene.cpp
     include/SoftRenderer/shader_context.h
     include/SoftRenderer/shader_program.h
-    src/shader_program.cpp
     include/SoftRenderer/transform.h
     src/transform.cpp
     include/SoftRenderer/vec.h
