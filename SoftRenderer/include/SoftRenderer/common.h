@@ -10,6 +10,28 @@ typedef int64_t i64;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
+// NOLINTBEGIN
+// Disable the default copy functions for a class.
+#ifndef DISABLE_COPY
+#define DISABLE_COPY(class_name)                     \
+    explicit class_name(const class_name&) = delete; \
+    class_name& operator=(const class_name&) = delete;
+#endif
+
+// Disable the default move functions for a class.
+#ifndef DISABLE_MOVE
+#define DISABLE_MOVE(class_name)                \
+    explicit class_name(class_name&&) = delete; \
+    class_name& operator=(class_name&&) = delete;
+#endif
+
+// Disable the default copy and move functions for a class.
+#ifndef DISABLE_COPY_AND_MOVE
+#define DISABLE_COPY_AND_MOVE(class_name) \
+    DISABLE_COPY(class_name) DISABLE_MOVE(class_name)
+#endif
+// NOLINTEND
+
 namespace MathUtils {
 static constexpr float C_PI() noexcept {
 #ifdef M_PI

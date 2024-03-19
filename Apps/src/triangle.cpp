@@ -13,15 +13,15 @@ class TriangleShaderProgram : public IShaderProgram {
 public:
     Vector3f VertexShader(const Vertex &vertex,
                           ShaderContext &context) override {
-        context.varring_color[FRAG_COLOR_BINDING] = vertex.color;
+        auto frag_color = ShaderVariable<Color>(0, context);
+        frag_color.set(vertex.color);
         return vertex.position;
     }
-    Color PixelShader(const ShaderContext &context) override {
-        return context.varring_color.at(FRAG_COLOR_BINDING);
-    }
 
-private:
-    static u32 FRAG_COLOR_BINDING;
+    Color PixelShader(const ShaderContext &context) override {
+        auto frag_color = ShaderVariable<Color>(0, context);
+        return frag_color.get();
+    }
 };
 
 int main(int argc, char *argv[]) {

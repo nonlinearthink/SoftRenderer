@@ -1,25 +1,26 @@
 set(
     SOFTRENDERER_FILES
     include/SoftRenderer/camera.h
-    src/camera.cpp
     include/SoftRenderer/color.h
     include/SoftRenderer/common.h
-    src/common.cpp
     include/SoftRenderer/matrix.h
     include/SoftRenderer/mesh.h
     include/SoftRenderer/obj_loader.h
-    src/obj_loader.cpp
     include/SoftRenderer/renderer.h
-    src/renderer.cpp
     include/SoftRenderer/scene.h
-    src/scene.cpp
     include/SoftRenderer/shader_context.h
     include/SoftRenderer/shader_program.h
+    include/SoftRenderer/shader_variable.h
     include/SoftRenderer/transform.h
-    src/transform.cpp
     include/SoftRenderer/vec.h
     include/SoftRenderer/vertex.h
     include/SoftRenderer.h
+    src/camera.cpp
+    src/common.cpp
+    src/obj_loader.cpp
+    src/renderer.cpp
+    src/scene.cpp
+    src/transform.cpp
 )
 
 if(PRINT_CMAKE_DEBUG_MESSAGE)

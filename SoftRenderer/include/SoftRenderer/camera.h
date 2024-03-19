@@ -39,7 +39,7 @@ private:
 
     float fov_{DEFAULT_FOV};
     float aspect_{DEFAULT_ASPECT};
-    float near_z_{DEFAULT_FAR_Z};
+    float near_z_{DEFAULT_NEAR_Z};
     float far_z_{DEFAULT_FAR_Z};
     ProjectionMode projection_mode_{DEFAULT_PROJECTION_MODE};
 
