@@ -2,8 +2,10 @@
 
 #include <cmath>
 #include <cstdint>
+#include <initializer_list>
 #include <limits>
 #include <string>
+#include <utility>
 
 typedef int32_t i32;
 typedef int64_t i64;
@@ -62,7 +64,11 @@ inline T Lerp(const T& lhs, const T& rhs, float t) {
 }  // namespace MathUtils
 
 namespace StringUtils {
-// Used to implement the ends_with function of std::string in standards before
-// CXX20
+// Simple implementation of ends_with function of std::string, the C++20
+// standard library.
 bool EndsWith(const std::string& full_str, const std::string& end_str);
+
+// Simple implementation of std::format, the C++20 standard library.
+std::string Format(const std::string& fmt_str,
+                   const std::initializer_list<const char*>& args);
 }  // namespace StringUtils

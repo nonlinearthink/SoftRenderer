@@ -10,6 +10,6 @@ macro(AddTest target_name)
     )
 endmacro(AddTest target_name)
 
-AddTest(math_common_tests)
+AddTest(common_tests)
 AddTest(math_vec_tests)
 AddTest(math_matrix_tests)

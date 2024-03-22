@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <stdexcept>
 
 #include "SoftRenderer/common.h"
 #include "SoftRenderer/shader_context.h"
@@ -15,7 +16,7 @@ public:
         : binding_{binding}, context_{const_cast<ShaderContext&>(context)} {}
     DISABLE_COPY_AND_MOVE(ShaderVariable)
 
-    void set(const T& value) {
+    void set(const T& value) noexcept {
         auto variable_table = context_.GetVariableTable<T>();
         variable_table.emplace(binding_, value);
     }
@@ -23,10 +24,11 @@ public:
     T get() const {
         auto variable_table = context_.GetVariableTable<T>();
         auto it = variable_table.find(binding_);
-#ifdef _DEBUG
-        assert(it == variable_table.end());
-#endif
-        return it->second;
+        if (it == variable_table.end()) {
+            throw std::runtime_error("Can't find the shader variable");
+        } else {
+            return it->second;
+        }
     }
 
 private:
