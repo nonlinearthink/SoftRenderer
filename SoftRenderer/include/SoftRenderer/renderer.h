@@ -12,46 +12,50 @@
 namespace SoftRenderer {
 enum class RenderMode { WIREFRAME, SOLID, SHADED };
 
-struct RenderState {
-    Color background;
-    RenderMode render_mode;
-
-    RenderState()
-        : background(Color::Black()), render_mode(RenderMode::SHADED) {}
-};
-
 class Renderer {
 public:
     Scene scene;
 
-    Renderer(int width, int height) : width_(width), height_(height){};
-    Renderer(int width, int height, RenderState render_state)
-        : width_(width), height_(height), render_state_(render_state) {}
+    Renderer(int width, int height)
+        : width_{width}, height_{height}, background_{Color::Black()} {};
 
+    // Get the width of the render image.
     [[nodiscard]] inline int get_width() const { return width_; };
+    // Get the height of the render image.
     [[nodiscard]] inline int get_height() const { return height_; };
+    // Set the background that is filled into the whole render image by default.
+    inline void set_background(const Color& background) {
+        background_ = background;
+    }
+    // Set the frame buffer of the render image.
     inline void set_frame_buffer(u32 *frame_buffer) {
         frame_buffer_ = frame_buffer;
     }
-    inline void set_vertex_buffer(std::vector<Vertex> vertex_buffer) {
+    // Set the vertex buffer, note the copy semantics here.
+    void set_vertex_buffer(std::vector<Vertex> vertex_buffer) {
         vertex_buffer_ = std::move(vertex_buffer);
     }
-    inline void set_shader_program(
-        std::unique_ptr<IShaderProgram> shader_program) {
-        shader_program_ = std::move(shader_program);
+    // Set the shader porgram, accepts a raw pointer.
+    inline void set_shader_program(IShaderProgram *shader_program) {
+        shader_program_ = std::shared_ptr<IShaderProgram>(shader_program);
     }
-
-    virtual void Render();
+    // Set the shader porgram, accepts a shared_ptr.
+    inline void set_shader_program(
+        const std::shared_ptr<IShaderProgram> &shader_program) {
+        shader_program_ = shader_program;
+    }
+    // Clear frame buffer with the background color.
+    void Clear();
+    // Draw a primitive.
+    void DrawPrimitive();
 
 private:
     int width_, height_;
-    RenderState render_state_;
+    Color background_;
     u32 *frame_buffer_{nullptr};
     std::vector<Vertex> vertex_buffer_;
-    std::unique_ptr<IShaderProgram> shader_program_{nullptr};
+    std::shared_ptr<IShaderProgram> shader_program_{nullptr};
 
-    // Clear frameBuffer.
-    void Clear();
     // Put pixel color.
     void PutPixel(const Vector2i &p, const Color &color);
     // Draw a line.
@@ -70,7 +74,5 @@ private:
     void DrawTriangle(const Vector3f &p0, const Vector3f &p1,
                       const Vector3f &p2, const Matrix4 &matrix,
                       const Color &color);
-    // Draw a primitive
-    void DrawPrimitive();
 };
 };  // namespace SoftRenderer

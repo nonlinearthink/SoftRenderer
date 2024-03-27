@@ -2,13 +2,8 @@
 
 using namespace SoftRenderer;
 
-void Renderer::Render() {
-    Clear();
-    DrawPrimitive(); 
-}
-
 void Renderer::Clear() {
-    auto color_data = static_cast<u32>(render_state_.background);
+    auto color_data = static_cast<u32>(background_);
     for (int i = 0; i < width_; i++) {
         for (int j = 0; j < height_; j++) {
             frame_buffer_[j * width_ + i] = color_data;

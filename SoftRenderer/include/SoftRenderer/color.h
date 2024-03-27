@@ -20,65 +20,49 @@ public:
     static inline Color Green() { return {0, 1, 0}; };
     static inline Color Blue() { return {0, 0, 1}; };
 
-    inline Color operator+(const Color& rhs) const;
-    inline Color operator-(const Color& rhs) const;
-    inline Color operator*(float k) const;
-    inline Color operator/(float k) const;
-    explicit constexpr operator u32() const;
+    inline Color operator+(const Color& rhs) const {
+        const auto min = 0.f;
+        const auto max = 1.f;
+        const float r = std::clamp(r + rhs.r, min, max);
+        const float g = std::clamp(g + rhs.g, min, max);
+        const float b = std::clamp(b + rhs.b, min, max);
+        return {r, g, b};
+    }
+    inline Color operator-(const Color& rhs) const {
+        const auto min = 0.f;
+        const auto max = 1.f;
+        const float r = std::clamp(r - rhs.r, min, max);
+        const float g = std::clamp(g - rhs.g, min, max);
+        const float b = std::clamp(b - rhs.b, min, max);
+        return {r, g, b};
+    }
+    inline Color operator*(float k) const {
+        const auto min = 0.f;
+        const auto max = 1.f;
+        const float r = std::clamp(r * k, min, max);
+        const float g = std::clamp(g * k, min, max);
+        const float b = std::clamp(b * k, min, max);
+        return {r, g, b};
+    }
+    inline Color operator/(float k) const {
+        const auto min = 0.f;
+        const auto max = 1.f;
+        const float r = std::clamp(r / k, min, max);
+        const float g = std::clamp(g / k, min, max);
+        const float b = std::clamp(b / k, min, max);
+        return {r, g, b};
+    }
+    constexpr explicit operator u32() const {
+        return (static_cast<u32>(r * 255) << 24) |
+               (static_cast<u32>(g * 255) << 16) |
+               (static_cast<u32>(b * 255) << 8) | static_cast<u32>(255);
+    }
 
-    inline void CopyFrom(const Color& color);
+    inline void CopyFrom(const Color& color) {
+        r = color.r;
+        g = color.g;
+        b = color.b;
+        a = color.a;
+    }
 };
-
-#pragma region Color Inline Implementation
-
-inline Color Color::operator+(const Color& rhs) const {
-    const auto min = 0.f;
-    const auto max = 1.f;
-    const float r = std::clamp(r + rhs.r, min, max);
-    const float g = std::clamp(g + rhs.g, min, max);
-    const float b = std::clamp(b + rhs.b, min, max);
-    return {r, g, b};
-}
-
-inline Color Color::operator-(const Color& rhs) const {
-    const auto min = 0.f;
-    const auto max = 1.f;
-    const float r = std::clamp(r - rhs.r, min, max);
-    const float g = std::clamp(g - rhs.g, min, max);
-    const float b = std::clamp(b - rhs.b, min, max);
-    return {r, g, b};
-}
-
-inline Color Color::operator*(const float k) const {
-    const auto min = 0.f;
-    const auto max = 1.f;
-    const float r = std::clamp(r * k, min, max);
-    const float g = std::clamp(g * k, min, max);
-    const float b = std::clamp(b * k, min, max);
-    return {r, g, b};
-}
-
-inline Color Color::operator/(const float k) const {
-    const auto min = 0.f;
-    const auto max = 1.f;
-    const float r = std::clamp(r / k, min, max);
-    const float g = std::clamp(g / k, min, max);
-    const float b = std::clamp(b / k, min, max);
-    return {r, g, b};
-}
-
-constexpr Color::operator u32() const {
-    return (static_cast<u32>(r * 255) << 24) |
-           (static_cast<u32>(g * 255) << 16) |
-           (static_cast<u32>(b * 255) << 8) | static_cast<u32>(255);
-}
-
-inline void Color::CopyFrom(const Color& color) {
-    r = color.r;
-    g = color.g;
-    b = color.b;
-    a = color.a;
-}
-
-#pragma endregion Color Inline Implementation
 }  // namespace SoftRenderer

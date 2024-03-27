@@ -7,7 +7,8 @@
 using namespace SoftRenderer;
 using namespace MathUtils;
 
-TEST_CASE("Vector2 Tests") {  // NOLINT
+// NOLINTBEGIN(cert-err58-cpp)
+TEST_CASE("Vector2 Tests") {
     Vector2i v1(1, 2);
     Vector2i v2(3, 4);
     Vector2i v3(5, 6);
@@ -44,7 +45,7 @@ TEST_CASE("Vector2 Tests") {  // NOLINT
     }
 }
 
-TEST_CASE("Vector3 Tests", "[Vector3]") {  // NOLINT
+TEST_CASE("Vector3 Tests", "[Vector3]") {
     float epsilon = std::numeric_limits<float>::epsilon();
 
     Vector3f v1(1.f, 2.f, 3.f);
@@ -115,3 +116,4 @@ TEST_CASE("Vector3 Tests", "[Vector3]") {  // NOLINT
         REQUIRE(Equals(result.z, 3.f / std::sqrt(14.f)));
     }
 }
+// NOLINTEND(cert-err58-cpp)

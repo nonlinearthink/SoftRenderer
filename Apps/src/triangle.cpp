@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "SDLApplication.h"
+#include "SDL_application.h"
 #include "SoftRenderer.h"
 
 using namespace SoftRenderer;
@@ -25,21 +25,24 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    std::vector<Vertex> vertex_buffer = {
-        {{0., 0.7, 0.9}, {0., 1., 0.}, {0., 0.}, {1., 0., 0., 1.}},
-        {{-0.6, -0.2, 0.01}, {0., 1., 0.}, {0., 0.}, {0., 1., 0., 1.}},
-        {{+0.6, -0.2, 0.01}, {0., 1., 0.}, {0., 0.}, {0., 0., 1., 1.}}};
+    auto app = std::make_unique<SDLApplication>("Shaded Triangle", 800, 600);
+    app->set_initialize_callback([](SoftRenderer::Renderer &renderer) {
+        std::vector<Vertex> vertex_buffer = {
+            {{0., 0.7, 0.9}, {0., 1., 0.}, {0., 0.}, {1., 0., 0., 1.}},
+            {{-0.6, -0.2, 0.01}, {0., 1., 0.}, {0., 0.}, {0., 1., 0., 1.}},
+            {{0.6, -0.2, 0.01}, {0., 1., 0.}, {0., 0.}, {0., 0., 1., 1.}}};
+        std::shared_ptr<IShaderProgram> shader_program =
+            std::make_shared<TriangleShaderProgram>();
 
-    auto renderer = std::make_unique<SoftRenderer::Renderer>(800, 600);
-    renderer->set_vertex_buffer(vertex_buffer);
-    renderer->set_shader_program(std::make_unique<TriangleShaderProgram>());
-
-    auto app = std::make_unique<SDLApplication>("Shaded Triangle", renderer);
-    if (!app->Initialize()) {
-        return 1;
-    }
-    app->MainLoop();
-    app->Destroy();
+        renderer.set_background(Color::Red());
+        renderer.set_vertex_buffer(vertex_buffer);
+        renderer.set_shader_program(shader_program);
+    });
+    app->set_render_callback([](SoftRenderer::Renderer &renderer) {
+        renderer.Clear();
+        renderer.DrawPrimitive();
+    });
+    app->Run();
 
     return 0;
 }

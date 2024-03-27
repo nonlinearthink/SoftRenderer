@@ -11,5 +11,5 @@ macro(AddTest target_name)
 endmacro(AddTest target_name)
 
 AddTest(common_tests)
-AddTest(math_vec_tests)
-AddTest(math_matrix_tests)
+AddTest(vec_tests)
+AddTest(matrix_tests)
