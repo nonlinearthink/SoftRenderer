@@ -21,7 +21,7 @@ std::string StringUtils::Format(
                 oss << args.begin()[arg_index];
                 ++arg_index;
             }
-            ++i;  // Skip the closing brace
+            ++i;  // Skip the closing brace.
         } else {
             oss << fmt_str[i];
         }

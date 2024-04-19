@@ -1,18 +1,45 @@
 #include "SoftRenderer/renderer.h"
 
+#include <iostream>
+
+#include "SoftRenderer/shader_context.h"
+#include "SoftRenderer/transform.h"
+
 using namespace SoftRenderer;
 
-void Renderer::Render() {
-    Clear();
-    DrawPrimitive(); 
-}
-
 void Renderer::Clear() {
-    auto color_data = static_cast<u32>(render_state_.background);
+    auto color_data = static_cast<u32>(background_);
     for (int i = 0; i < width_; i++) {
         for (int j = 0; j < height_; j++) {
             frame_buffer_[j * width_ + i] = color_data;
         }
+    }
+}
+
+void Renderer::DrawPrimitive(Vertex v0, Vertex v1, Vertex v2) {
+    auto context0 = ShaderContext();
+    auto context1 = ShaderContext();
+    auto context2 = ShaderContext();
+
+    auto position0 = shader_program_->VertexShader(v0, context0);
+    auto position1 = shader_program_->VertexShader(v1, context1);
+    auto position2 = shader_program_->VertexShader(v2, context2);
+
+    std::cout << position0 << position1 << position2 << std::endl;
+}
+
+void Renderer::Render() {
+    if (!frame_buffer_) {
+        return;
+    }
+    Clear();
+    auto vertex_size = static_cast<int>(vertex_buffer_.size());
+    auto index_size = static_cast<int>(index_buffer_.size());
+    for (int i = 0; i <= index_size - 3; i++) {
+        auto v0 = vertex_buffer_[index_buffer_[i] % vertex_size];
+        auto v1 = vertex_buffer_[index_buffer_[i + 1] % vertex_size];
+        auto v2 = vertex_buffer_[index_buffer_[i + 2] % vertex_size];
+        DrawPrimitive(v0, v1, v2);
     }
 }
 
@@ -80,5 +107,3 @@ void Renderer::DrawTriangle2D(const Vector2i &p0, const Vector2i &p1,
         }
     }
 }
-
-void Renderer::DrawPrimitive() {}

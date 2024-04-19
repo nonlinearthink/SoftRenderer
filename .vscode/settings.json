@@ -17,8 +17,5 @@
             "foldEndRegex": "^[\\s]*#pragma[\\s]*endregion.*[\\s]*$",
             "foldStartRegex": "^[\\s]*#pragma[\\s]*region[\\s]*(.*)[\\s]*$"
         },
-    },
-    "i18n-ally.localesPaths": [
-        "ThirdParty/SDL/src/locale"
-    ]
+    }
 }

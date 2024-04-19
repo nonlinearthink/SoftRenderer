@@ -1,11 +1,12 @@
-#define CATCH_CONFIG_MAIN
-
 #include "SoftRenderer/matrix.h"
 #include "catch2/catch_test_macros.hpp"
 
+#define CATCH_CONFIG_MAIN
+
 using namespace SoftRenderer;
 
-TEST_CASE("Matrix Tests", "[Matrix]") {  // NOLINT
+/// NOLINTBEGIN(cert-err58-cpp)
+TEST_CASE("Matrix Tests", "[Matrix]") {
     Matrix2 mat2{1, 2, 3, 4};
     Matrix3 mat3{1, 2, 3, 4, 5, 6, 7, 8, 9};
     Matrix4 mat4i{Matrix4::Identity()},
@@ -107,3 +108,4 @@ TEST_CASE("Matrix Tests", "[Matrix]") {  // NOLINT
         REQUIRE(mat4inverse == mat4);
     }
 }
+/// NOLINTEND(cert-err58-cpp)

@@ -2,17 +2,15 @@
 
 #include <cmath>
 #include <cstdint>
-#include <initializer_list>
 #include <limits>
 #include <string>
-#include <utility>
 
 typedef int32_t i32;
 typedef int64_t i64;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-// NOLINTBEGIN
+/// NOLINTBEGIN(bugprone-macro-parentheses)
 // Disable the default copy functions for a class.
 #ifndef DISABLE_COPY
 #define DISABLE_COPY(class_name)                     \
@@ -32,9 +30,10 @@ typedef uint64_t u64;
 #define DISABLE_COPY_AND_MOVE(class_name) \
     DISABLE_COPY(class_name) DISABLE_MOVE(class_name)
 #endif
-// NOLINTEND
+/// NOLINTEND(bugprone-macro-parentheses)
 
 namespace MathUtils {
+// Get the pi.
 static constexpr float C_PI() noexcept {
 #ifdef M_PI
     return M_PI;
@@ -43,10 +42,13 @@ static constexpr float C_PI() noexcept {
 #endif
 }
 
+// Convert degree to radian.
 constexpr float DegreeToRadian(float degree) { return degree * (C_PI() / 180); }
 
+// Convert radian to degree.
 constexpr float RadianToDegree(float radian) { return radian * (180 / C_PI()); }
 
+// Compare equality of two floating point numbers.
 template <typename T>
 inline bool Equals(T lhs, T rhs) {
     static_assert(std::is_floating_point<T>::value,
@@ -55,11 +57,6 @@ inline bool Equals(T lhs, T rhs) {
     return std::abs(lhs - rhs) <=
            epsilon *
                std::max({std::abs(lhs), std::abs(rhs), static_cast<T>(1.0)});
-}
-
-template <typename T>
-inline T Lerp(const T& lhs, const T& rhs, float t) {
-    return (lhs * (1 - t)) + (rhs * t);
 }
 }  // namespace MathUtils
 

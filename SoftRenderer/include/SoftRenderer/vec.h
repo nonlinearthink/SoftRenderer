@@ -1,6 +1,9 @@
 #pragma once
 
 #include <istream>
+#include <stdexcept>
+
+#include "SoftRenderer/common.h"
 
 namespace SoftRenderer {
 template <typename T>
@@ -10,176 +13,135 @@ public:
 
     Vector2<T>() : x{0}, y{0} {}
     Vector2<T>(T x, T y) : x{x}, y{y} {}
-    Vector2<T>(const Vector2<T>& v) : x{v.x}, y{v.y} {}
 
-    inline T operator[](size_t n) const;
-    inline Vector2<T> operator+(const Vector2<T>& rhs) const;
-    inline Vector2<T> operator-(const Vector2<T>& rhs) const;
-    inline Vector2<T> operator*(const Vector2<T>& rhs) const;
-    inline Vector2<T> operator*(T k) const;
-    inline bool operator==(const Vector2<T>& rhs) const;
-    inline bool operator!=(const Vector2<T>& rhs) const;
-
-    inline void CopyFrom(const Vector2<T>& v);
-};
-
-#pragma region Vector2 Template Implementation
-
-template <typename T>
-inline T Vector2<T>::operator[](size_t n) const {
-    if (n == 1) {
-        return y;
-    } else {
-        return x;
+    T operator[](size_t n) const {
+        if (n == 0) {
+            return x;
+        } else if (n == 1) {
+            return y;
+        } else {
+            throw std::runtime_error("access out of range");
+        }
     }
-}
+    constexpr Vector2<T> operator+(const Vector2<T>& rhs) const {
+        return {x + rhs.x, y + rhs.y};
+    };
+    constexpr Vector2<T> operator-(const Vector2<T>& rhs) const {
+        return {x - rhs.x, y - rhs.y};
+    };
+    constexpr Vector2<T> operator*(const Vector2<T>& rhs) const {
+        return {x * rhs.x, y * rhs.y};
+    };
+    constexpr Vector2<T> operator*(T k) const { return {x * k, y * k}; };
+    inline bool operator==(const Vector2<T>& rhs) const {
+        return x == rhs.x && y == rhs.y;
+    }
+    inline bool operator!=(const Vector2<T>& rhs) const {
+        return x != rhs.x || y != rhs.y;
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Vector2<T>& v) {
+        return os << "Vector2<" << typeid(T).name() << ">(" << v.x << ", "
+                  << v.y << ")";
+    }
 
-template <typename T>
-inline Vector2<T> Vector2<T>::operator+(const Vector2<T>& rhs) const {
-    return {x + rhs.x, y + rhs.y};
+    constexpr void CopyFrom(const Vector2<T>& v) noexcept {
+        x = v.x;
+        y = v.y;
+    }
 };
 
-template <typename T>
-inline Vector2<T> Vector2<T>::operator-(const Vector2<T>& rhs) const {
-    return {x - rhs.x, y - rhs.y};
-};
-
-template <typename T>
-inline Vector2<T> Vector2<T>::operator*(const Vector2<T>& rhs) const {
-    return {x * rhs.x, y * rhs.y};
-};
-
-template <typename T>
-inline Vector2<T> Vector2<T>::operator*(T k) const {
-    return {x * k, y * k};
-};
-
-template <typename T>
-inline bool Vector2<T>::operator==(const Vector2<T>& rhs) const {
-    return x == rhs.x && y == rhs.y;
+template <>
+inline bool Vector2<float>::operator==(const Vector2<float>& rhs) const {
+    using namespace MathUtils;
+    return Equals(x, rhs.x) && Equals(y, rhs.y);
 }
 
-template <typename T>
-inline bool Vector2<T>::operator!=(const Vector2<T>& rhs) const {
-    return x != rhs.x || y != rhs.y;
+template <>
+inline bool Vector2<float>::operator!=(const Vector2<float>& rhs) const {
+    using namespace MathUtils;
+    return Equals(x, rhs.x) || Equals(y, rhs.y);
 }
-
-template <typename T>
-inline void Vector2<T>::CopyFrom(const Vector2<T>& v) {
-    x = v.x;
-    y = v.y;
-}
-
-#pragma endregion Vector2 Template Implementation
 
 template <typename T>
 class Vector3 {
 public:
-    T x, y, z;
+    T x, y, z, w;
 
-    Vector3<T>() : x{0}, y{0}, z{0} {}
-    Vector3<T>(T x, T y, T z) : x{x}, y{y}, z{z} {}
-    Vector3<T>(const Vector3<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
+    Vector3<T>() : x{0}, y{0}, z{0}, w{1} {}
+    Vector3<T>(T x, T y, T z) : x{x}, y{y}, z{z}, w{1} {}
 
-    T operator[](size_t n) const;
-    inline Vector3<T> operator+(const Vector3<T>& rhs) const;
-    inline Vector3<T> operator-(const Vector3<T>& rhs) const;
-    inline Vector3<T> operator*(const Vector3<T>& rhs) const;
-    inline Vector3<T> operator*(T k) const;
-    constexpr bool operator==(const Vector3<T>& rhs) const;
-    constexpr bool operator!=(const Vector3<T>& rhs) const;
-
-    [[nodiscard]] constexpr float Length() const;
-    [[nodiscard]] constexpr float LengthSquare() const;
-    constexpr T Dot(const Vector3<T>& rhs) const;
-    Vector3<T> Cross(const Vector3<T>& rhs) const;
-    Vector3<T> Normalize() const;
-
-    inline void CopyFrom(const Vector3<T>& v);
-};
-
-#pragma region Vector3 Template Implementation
-
-template <typename T>
-T Vector3<T>::operator[](size_t n) const {
-    if (n == 1) {
-        return y;
-    } else if (n == 2) {
-        return z;
-    } else {
-        return x;
+    T operator[](size_t n) const {
+        if (n == 0) {
+            return x;
+        } else if (n == 1) {
+            return y;
+        } else if (n == 2) {
+            return z;
+        } else {
+            throw std::runtime_error("access out of range");
+        }
     }
-}
-
-template <typename T>
-inline Vector3<T> Vector3<T>::operator+(const Vector3<T>& rhs) const {
-    return {x + rhs.x, y + rhs.y, z + rhs.z};
-};
-
-template <typename T>
-inline Vector3<T> Vector3<T>::operator-(const Vector3<T>& rhs) const {
-    return {x - rhs.x, y - rhs.y, z - rhs.z};
-};
-
-template <typename T>
-inline Vector3<T> Vector3<T>::operator*(const Vector3<T>& rhs) const {
-    return {x * rhs.x, y * rhs.y, z * rhs.z};
-};
-
-template <typename T>
-inline Vector3<T> Vector3<T>::operator*(const T k) const {
-    return {x * k, y * k, z * k};
-};
-
-template <typename T>
-constexpr bool Vector3<T>::operator==(const Vector3<T>& rhs) const {
-    return x == rhs.x && y == rhs.y && z == rhs.z;
-}
-
-template <typename T>
-constexpr bool Vector3<T>::operator!=(const Vector3<T>& rhs) const {
-    return x != rhs.x || y != rhs.y || z != rhs.z;
-}
-
-template <typename T>
-constexpr float Vector3<T>::LengthSquare() const {
-    return x * x + y * y + z * z;
-}
-
-template <typename T>
-constexpr float Vector3<T>::Length() const {
-    return std::sqrt(LengthSquare());
-}
-
-template <typename T>
-constexpr T Vector3<T>::Dot(const Vector3<T>& rhs) const {
-    return x * rhs.x + y * rhs.y + z * rhs.z;
-}
-
-template <typename T>
-Vector3<T> Vector3<T>::Cross(const Vector3<T>& rhs) const {
-    return {y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
-            x * rhs.y - y * rhs.x};
-}
-
-template <typename T>
-Vector3<T> Vector3<T>::Normalize() const {
-    float len = Length();
-    if (len != 0) {
-        return {x / len, y / len, z / len};
-    } else {
-        return {*this};
+    constexpr Vector3<T> operator+(const Vector3<T>& rhs) const {
+        return {x + rhs.x, y + rhs.y, z + rhs.z};
+    };
+    constexpr Vector3<T> operator-(const Vector3<T>& rhs) const {
+        return {x - rhs.x, y - rhs.y, z - rhs.z};
+    };
+    constexpr Vector3<T> operator*(const Vector3<T>& rhs) const {
+        return {x * rhs.x, y * rhs.y, z * rhs.z};
+    };
+    constexpr Vector3<T> operator*(T k) const { return {x * k, y * k, z * k}; };
+    inline bool operator==(const Vector3<T>& rhs) const {
+        return x == rhs.x && y == rhs.y && z == rhs.z;
     }
+    inline bool operator!=(const Vector3<T>& rhs) const {
+        return x != rhs.x || y != rhs.y || z != rhs.z;
+    }
+    friend constexpr std::ostream& operator<<(std::ostream& os,
+                                              const Vector3<T>& v) {
+        return os << "Vector3<" << typeid(T).name() << ">(" << v.x << ", "
+                  << v.y << ", " << v.z << ")";
+    }
+
+    constexpr void CopyFrom(const Vector3<T>& v) noexcept {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
+    [[nodiscard]] constexpr float Length() const {
+        return std::sqrt(LengthSquare());
+    }
+    [[nodiscard]] constexpr float LengthSquare() const noexcept {
+        return x * x + y * y + z * z;
+    }
+    [[nodiscard]] constexpr T Dot(const Vector3<T>& rhs) const noexcept {
+        return x * rhs.x + y * rhs.y + z * rhs.z;
+    }
+    [[nodiscard]] constexpr Vector3<T> Cross(const Vector3<T>& rhs) const {
+        return {y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
+                x * rhs.y - y * rhs.x};
+    }
+    [[nodiscard]] constexpr Vector3<T> Normalize() const {
+        float len = Length();
+        if (len != 0) {
+            return {x / len, y / len, z / len};
+        } else {
+            return {*this};
+        }
+    }
+};
+
+template <>
+inline bool Vector3<float>::operator==(const Vector3<float>& rhs) const {
+    using namespace MathUtils;
+    return Equals(x, rhs.x) && Equals(y, rhs.y) && Equals(z, rhs.z);
 }
 
-template <typename T>
-inline void Vector3<T>::CopyFrom(const Vector3<T>& v) {
-    x = v.x;
-    y = v.y;
-    z = v.z;
+template <>
+inline bool Vector3<float>::operator!=(const Vector3<float>& rhs) const {
+    using namespace MathUtils;
+    return !Equals(x, rhs.x) || !Equals(y, rhs.y) || !Equals(z, rhs.z);
 }
-
-#pragma endregion Vector3 Template Implementation
 
 using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;

@@ -34,8 +34,8 @@ void Camera::Update() {
     ComputeProjectionTransform();
 }
 
-std::unique_ptr<Camera> CameraBuilder::Build() const {
-    auto camera = std::make_unique<Camera>(position_, target_, up_);
+std::shared_ptr<Camera> CameraBuilder::Build() const {
+    auto camera = std::make_shared<Camera>(position_, target_, up_);
     camera->set_fov(fov_);
     camera->set_aspect(aspect_);
     camera->set_near_z(near_z_);
